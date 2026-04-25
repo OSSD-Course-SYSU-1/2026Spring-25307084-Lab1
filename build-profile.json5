@@ -1,0 +1,42 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\ASUS\\.ohos\\config\\default_arkts-clock-master_MKoWtvoUWTzK4Zav_yEM5lQ1FEyG4YdSvX1JcXV0fgs=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AE9B26DB7A0FE826EC9AE6C0AB35CFF751CFBE161E3DA1DE0BA10A706F34459DA9A4E41BC0BE4",
+          "profile": "C:\\Users\\ASUS\\.ohos\\config\\default_arkts-clock-master_MKoWtvoUWTzK4Zav_yEM5lQ1FEyG4YdSvX1JcXV0fgs=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\ASUS\\.ohos\\config\\default_arkts-clock-master_MKoWtvoUWTzK4Zav_yEM5lQ1FEyG4YdSvX1JcXV0fgs=.p12",
+          "storePassword": "0000001A626605F33D5216B0871BC1A784E5431A08AC2971151A05D81812352B8D4C44445BE06E141E82"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.5(17)",
+        "targetSdkVersion": "5.0.5(17)",
+        "runtimeOS": "HarmonyOS"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
