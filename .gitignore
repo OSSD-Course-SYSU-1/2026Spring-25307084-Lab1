@@ -1,0 +1,15 @@
+# IDE缓存文件
+.idea/
+.ohos/
+.vscode/
+
+# 构建和依赖文件
+build/
+oh_modules/
+hvigor/
+node_modules/
+
+# 日志和临时文件
+*.log
+*.tmp
+*.bak
