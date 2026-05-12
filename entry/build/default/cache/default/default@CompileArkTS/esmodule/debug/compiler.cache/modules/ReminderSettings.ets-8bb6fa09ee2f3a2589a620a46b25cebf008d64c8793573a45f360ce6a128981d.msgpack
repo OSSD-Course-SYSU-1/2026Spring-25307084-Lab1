@@ -1,0 +1,592 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ8¥if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+// ReminderSettings.ets
+import promptAction from '@ohos.promptAction';
+import router from '@ohos.router';
+import storageUtil from '../common/utils/StorageUtil'; // ç”¨æ¥ä¿å­˜
+import { startReminderCheck } from '../common/utils/ReminderService'; // å¼•å…¥æé†’æœåŠ¡
+class ReminderSettings extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__morningOn = new ObservedPropertySimplePU(true, this, "morningOn");
+        this.__morningHour = new ObservedPropertySimplePU(8, this, "morningHour");
+        this.__morningMinute = new ObservedPropertySimplePU(0, this, "morningMinute");
+        this.__noonOn = new ObservedPropertySimplePU(false, this, "noonOn");
+        this.__noonHour = new ObservedPropertySimplePU(12, this, "noonHour");
+        this.__noonMinute = new ObservedPropertySimplePU(0, this, "noonMinute");
+        this.__eveningOn = new ObservedPropertySimplePU(false, this, "eveningOn");
+        this.__eveningHour = new ObservedPropertySimplePU(18, this, "eveningHour");
+        this.__eveningMinute = new ObservedPropertySimplePU(0
+        // ç”Ÿå‘½å‘¨æœŸå›žè°ƒï¼šç”¨äºŽæŽ¥æ”¶è¿”å›žçš„æ—¶é—´
+        , this, "eveningMinute");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.morningOn !== undefined) {
+            this.morningOn = params.morningOn;
+        }
+        if (params.morningHour !== undefined) {
+            this.morningHour = params.morningHour;
+        }
+        if (params.morningMinute !== undefined) {
+            this.morningMinute = params.morningMinute;
+        }
+        if (params.noonOn !== undefined) {
+            this.noonOn = params.noonOn;
+        }
+        if (params.noonHour !== undefined) {
+            this.noonHour = params.noonHour;
+        }
+        if (params.noonMinute !== undefined) {
+            this.noonMinute = params.noonMinute;
+        }
+        if (params.eveningOn !== undefined) {
+            this.eveningOn = params.eveningOn;
+        }
+        if (params.eveningHour !== undefined) {
+            this.eveningHour = params.eveningHour;
+        }
+        if (params.eveningMinute !== undefined) {
+            this.eveningMinute = params.eveningMinute;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__morningOn.purgeDependencyOnElmtId(rmElmtId);
+        this.__morningHour.purgeDependencyOnElmtId(rmElmtId);
+        this.__morningMinute.purgeDependencyOnElmtId(rmElmtId);
+        this.__noonOn.purgeDependencyOnElmtId(rmElmtId);
+        this.__noonHour.purgeDependencyOnElmtId(rmElmtId);
+        this.__noonMinute.purgeDependencyOnElmtId(rmElmtId);
+        this.__eveningOn.purgeDependencyOnElmtId(rmElmtId);
+        this.__eveningHour.purgeDependencyOnElmtId(rmElmtId);
+        this.__eveningMinute.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__morningOn.aboutToBeDeleted();
+        this.__morningHour.aboutToBeDeleted();
+        this.__morningMinute.aboutToBeDeleted();
+        this.__noonOn.aboutToBeDeleted();
+        this.__noonHour.aboutToBeDeleted();
+        this.__noonMinute.aboutToBeDeleted();
+        this.__eveningOn.aboutToBeDeleted();
+        this.__eveningHour.aboutToBeDeleted();
+        this.__eveningMinute.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get morningOn() {
+        return this.__morningOn.get();
+    }
+    set morningOn(newValue) {
+        this.__morningOn.set(newValue);
+    }
+    get morningHour() {
+        return this.__morningHour.get();
+    }
+    set morningHour(newValue) {
+        this.__morningHour.set(newValue);
+    }
+    get morningMinute() {
+        return this.__morningMinute.get();
+    }
+    set morningMinute(newValue) {
+        this.__morningMinute.set(newValue);
+    }
+    get noonOn() {
+        return this.__noonOn.get();
+    }
+    set noonOn(newValue) {
+        this.__noonOn.set(newValue);
+    }
+    get noonHour() {
+        return this.__noonHour.get();
+    }
+    set noonHour(newValue) {
+        this.__noonHour.set(newValue);
+    }
+    get noonMinute() {
+        return this.__noonMinute.get();
+    }
+    set noonMinute(newValue) {
+        this.__noonMinute.set(newValue);
+    }
+    get eveningOn() {
+        return this.__eveningOn.get();
+    }
+    set eveningOn(newValue) {
+        this.__eveningOn.set(newValue);
+    }
+    get eveningHour() {
+        return this.__eveningHour.get();
+    }
+    set eveningHour(newValue) {
+        this.__eveningHour.set(newValue);
+    }
+    get eveningMinute() {
+        return this.__eveningMinute.get();
+    }
+    set eveningMinute(newValue) {
+        this.__eveningMinute.set(newValue);
+    }
+    // ç”Ÿå‘½å‘¨æœŸå›žè°ƒï¼šç”¨äºŽæŽ¥æ”¶è¿”å›žçš„æ—¶é—´
+    aboutToAppear() {
+        const context = getContext(this);
+        storageUtil.init(context); // åˆå§‹åŒ– storageUtil
+        // è¯»å–å­˜å‚¨çš„æ•°æ®ï¼Œæ›´æ–°çŠ¶æ€
+        this.morningOn = storageUtil.loadBoolean('morningOn', true);
+        this.morningHour = storageUtil.loadNumber('morningHour', 8);
+        this.morningMinute = storageUtil.loadNumber('morningMinute', 0);
+        this.noonOn = storageUtil.loadBoolean('noonOn', false);
+        this.noonHour = storageUtil.loadNumber('noonHour', 12);
+        this.noonMinute = storageUtil.loadNumber('noonMinute', 0);
+        this.eveningOn = storageUtil.loadBoolean('eveningOn', false);
+        this.eveningHour = storageUtil.loadNumber('eveningHour', 18);
+        this.eveningMinute = storageUtil.loadNumber('eveningMinute', 0);
+        // æŽ¥æ”¶æ—¶é—´é€‰æ‹©é¡µå›žä¼ çš„å€¼
+        const params = router.getParams();
+        if (params !== undefined) { // è§„é¿ç¬¬ä¸€æ¬¡
+            if (params?.type) {
+                if (params.type === 'morning') {
+                    this.morningHour = params.hour;
+                    this.morningMinute = params.minute;
+                    storageUtil.save('morningHour', params.hour);
+                    storageUtil.save('morningMinute', params.minute);
+                }
+                else if (params.type === 'noon') {
+                    this.noonHour = params.hour;
+                    this.noonMinute = params.minute;
+                    storageUtil.save('noonHour', params.hour);
+                    storageUtil.save('noonMinute', params.minute);
+                }
+                else if (params.type === 'evening') {
+                    this.eveningHour = params.hour;
+                    this.eveningMinute = params.minute;
+                    storageUtil.save('eveningHour', params.hour);
+                    storageUtil.save('eveningMinute', params.minute);
+                }
+            }
+        }
+        // å¯åŠ¨å®šæ—¶æé†’æ£€æŸ¥
+        startReminderCheck(this.morningOn, this.morningHour, this.morningMinute, this.noonOn, this.noonHour, this.noonMinute, this.eveningOn, this.eveningHour, this.eveningMinute);
+    }
+    // ä¸¤ä¸ªå°å‡½æ•°
+    getHour(type) {
+        if (type === 'morning')
+            return this.morningHour;
+        if (type === 'noon')
+            return this.noonHour;
+        if (type === 'evening')
+            return this.eveningHour;
+        return 0;
+    }
+    getMinute(type) {
+        if (type === 'morning')
+            return this.morningMinute;
+        if (type === 'noon')
+            return this.noonMinute;
+        if (type === 'evening')
+            return this.eveningMinute;
+        return 0;
+    }
+    // build
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding(16);
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#f5f5f5');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('æé†’è®¾ç½®');
+            Text.fontSize(24);
+            Text.fontWeight(FontWeight.Bold);
+            Text.padding(16);
+        }, Text);
+        Text.pop();
+        // æ”¹åŠ¨1ï¼šä¼ å…¥ getter å’Œ setterï¼Œè€Œä¸æ˜¯ boolean å€¼
+        this.buildReminderCard.bind(this)('æ—©æ™¨æé†’', 'morning', () => this.morningOn, val => this.morningOn = val);
+        this.buildReminderCard.bind(this)('ä¸­åˆæé†’', 'noon', () => this.noonOn, val => this.noonOn = val);
+        this.buildReminderCard.bind(this)('æ™šä¸Šæé†’', 'evening', () => this.eveningOn, val => this.eveningOn = val);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // å ä½ç©ºç™½ï¼ŒæŠŠæŒ‰é’®æŽ¨åˆ°åº•éƒ¨
+            Column.create();
+            // å ä½ç©ºç™½ï¼ŒæŠŠæŒ‰é’®æŽ¨åˆ°åº•éƒ¨
+            Column.layoutWeight(1);
+        }, Column);
+        // å ä½ç©ºç™½ï¼ŒæŠŠæŒ‰é’®æŽ¨åˆ°åº•éƒ¨
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.create();
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.width('60%');
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.padding(20);
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.backgroundColor('#FFFFFF');
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.borderRadius(16);
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.shadow({ radius: 10, color: '#00000022', offsetX: 0, offsetY: 4 });
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.onClick(() => {
+                router.pushUrl({ url: 'pages/Index' });
+            });
+            // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+            Column.alignItems(HorizontalAlign.Center);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('è¿”å›žä¸»é¡µ');
+            Text.fontSize(20);
+            Text.fontWeight(FontWeight.Medium);
+        }, Text);
+        Text.pop();
+        // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+        Column.pop();
+        Column.pop();
+    }
+    //  æ”¹åŠ¨2ï¼šbindVal -> getVal()ï¼Œé€šè¿‡å‡½æ•°å®žæ—¶è¯»å–çŠ¶æ€
+    //  æ”¹åŠ¨3ï¼šonToggle(!getVal()) æ›¿ä»£ !bindValï¼Œä¿®å¤çŠ¶æ€ä¸æ›´æ–°é—®é¢˜
+    // ä¸€ä¸ªç»„ä»¶
+    buildReminderCard(subtitle, type, getVal, setVal, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create({ space: 10 });
+            Row.alignItems(VerticalAlign.Center);
+            Row.padding(12);
+            Row.backgroundColor({ "id": 125831026, "type": 10001, params: [], "bundleName": "com.example.harmonyos_clock_demo", "moduleName": "entry" });
+            Row.borderRadius(12);
+            Row.margin({ top: 8 });
+            Row.width('100%');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // å·¦ä¾§æ—¶é—´+æè¿°
+            Column.create();
+            // å·¦ä¾§æ—¶é—´+æè¿°
+            Column.alignItems(HorizontalAlign.Start);
+            // å·¦ä¾§æ—¶é—´+æè¿°
+            Column.flexGrow(1);
+            // å·¦ä¾§æ—¶é—´+æè¿°
+            Column.justifyContent(FlexAlign.Start);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+            Text.create(`${this.getHour(type).toString().padStart(2, '0')}:${this.getMinute(type).toString().padStart(2, '0')}`);
+            // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+            Text.fontSize(24);
+            // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+            Text.fontWeight(FontWeight.Medium);
+            // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+            Text.onClick(() => {
+                router.pushUrl({
+                    url: 'pages/TimePickerPage',
+                    params: {
+                        hour: this.getHour(type),
+                        minute: this.getMinute(type),
+                        type: type
+                    }
+                });
+            });
+        }, Text);
+        // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(subtitle);
+            Text.fontSize(14);
+            Text.fontColor('#888888');
+            Text.margin({ top: 4 });
+        }, Text);
+        Text.pop();
+        // å·¦ä¾§æ—¶é—´+æè¿°
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // å³ä¾§å¼€å…³
+            Toggle.create({
+                type: ToggleType.Switch,
+                isOn: getVal()
+            });
+            // å³ä¾§å¼€å…³
+            Toggle.onClick(() => {
+                const newVal = !getVal();
+                setVal(newVal);
+                this.showToast(subtitle.replace('æé†’', ''), newVal);
+                // ä¿å­˜
+                storageUtil.save(`${type}On`, newVal);
+            });
+            // å³ä¾§å¼€å…³
+            Toggle.padding(10);
+            // å³ä¾§å¼€å…³
+            Toggle.backgroundColor(getVal() ? '#ffbadabb' : '#f2f2f2');
+            // å³ä¾§å¼€å…³
+            Toggle.borderRadius(8);
+        }, Toggle);
+        // å³ä¾§å¼€å…³
+        Toggle.pop();
+        Row.pop();
+    }
+    showToast(label, value) {
+        promptAction.showToast({ message: `${label}æé†’ï¼š${value ? 'å·²å¼€å¯' : 'å·²å…³é—­'}` });
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "ReminderSettings";
+    }
+}
+registerNamedRoute(() => new ReminderSettings(undefined, {}), "", { bundleName: "com.example.harmonyos_clock_demo", moduleName: "entry", pagePath: "pages/ReminderSettings", pageFullPath: "entry/src/main/ets/pages/ReminderSettings", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=ReminderSettings.js.mapÂ”Ù` hvigor_ignore_D:_software_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙZ hvigor_ignore_D:_software_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙUD:\software\HarmonyOs-Clock-Demo-main\entry\src\main\ets\common\utils\StorageUtil.etsÙYD:\software\HarmonyOs-Clock-Demo-main\entry\src\main\ets\common\utils\ReminderService.etsÙSD:\software\HarmonyOs-Clock-Demo-main\entry\src\main\ets\pages\ReminderSettings.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ+D:\software\HarmonyOs-Clock-Demo-main\entryÙ%D:\software\HarmonyOs-Clock-Demo-main¥entry¥1.0.0Ô  Ù+D:\software\HarmonyOs-Clock-Demo-main\entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚÖ// ReminderSettings.ets
+import promptAction from '@ohos.promptAction'
+import router from '@ohos.router'
+import { common } from '@kit.AbilityKit'
+
+import storageUtil from '../common/utils/StorageUtil' // ç”¨æ¥ä¿å­˜
+import { startReminderCheck } from '../common/utils/ReminderService';  // å¼•å…¥æé†’æœåŠ¡
+
+// å®šä¹‰æŽ¥å£ï¼Œé¿å…ç›´æŽ¥ä½¿ç”¨å­—é¢é‡ç±»åž‹
+interface TimePickerParams {
+  hour: number
+  minute: number
+  type: string
+}
+
+@Entry
+@Component
+struct ReminderSettings {
+  // ç®€å•èµ·è§ï¼Œåˆ†ä¸‰ç§ä¼ å…¥
+  @State morningOn: boolean = true
+  @State morningHour: number = 8
+  @State morningMinute: number = 0
+
+  @State noonOn: boolean = false
+  @State noonHour: number = 12
+  @State noonMinute: number = 0
+
+  @State eveningOn: boolean = false
+  @State eveningHour: number = 18
+  @State eveningMinute: number = 0
+
+
+  // ç”Ÿå‘½å‘¨æœŸå›žè°ƒï¼šç”¨äºŽæŽ¥æ”¶è¿”å›žçš„æ—¶é—´
+  aboutToAppear() {
+    const context = getContext(this) as common.UIAbilityContext
+    storageUtil.init(context)  // åˆå§‹åŒ– storageUtil
+
+    // è¯»å–å­˜å‚¨çš„æ•°æ®ï¼Œæ›´æ–°çŠ¶æ€
+    this.morningOn = storageUtil.loadBoolean('morningOn', true)
+    this.morningHour = storageUtil.loadNumber('morningHour', 8)
+    this.morningMinute = storageUtil.loadNumber('morningMinute', 0)
+
+    this.noonOn = storageUtil.loadBoolean('noonOn', false)
+    this.noonHour = storageUtil.loadNumber('noonHour', 12)
+    this.noonMinute = storageUtil.loadNumber('noonMinute', 0)
+
+    this.eveningOn = storageUtil.loadBoolean('eveningOn', false)
+    this.eveningHour = storageUtil.loadNumber('eveningHour', 18)
+    this.eveningMinute = storageUtil.loadNumber('eveningMinute', 0)
+
+    // æŽ¥æ”¶æ—¶é—´é€‰æ‹©é¡µå›žä¼ çš„å€¼
+    const params = router.getParams() as TimePickerParams
+    if(params !== undefined) { // è§„é¿ç¬¬ä¸€æ¬¡
+      if (params?.type) {
+        if (params.type === 'morning') {
+          this.morningHour = params.hour
+          this.morningMinute = params.minute
+          storageUtil.save('morningHour', params.hour)
+          storageUtil.save('morningMinute', params.minute)
+        } else if (params.type === 'noon') {
+          this.noonHour = params.hour
+          this.noonMinute = params.minute
+          storageUtil.save('noonHour', params.hour)
+          storageUtil.save('noonMinute', params.minute)
+        } else if (params.type === 'evening') {
+          this.eveningHour = params.hour
+          this.eveningMinute = params.minute
+          storageUtil.save('eveningHour', params.hour)
+          storageUtil.save('eveningMinute', params.minute)
+        }
+      }
+    }
+
+    // å¯åŠ¨å®šæ—¶æé†’æ£€æŸ¥
+    startReminderCheck(
+      this.morningOn, this.morningHour, this.morningMinute,
+      this.noonOn, this.noonHour, this.noonMinute,
+      this.eveningOn, this.eveningHour, this.eveningMinute
+    );
+  }
+
+  // ä¸¤ä¸ªå°å‡½æ•°
+  getHour(type: string): number {
+    if (type === 'morning') return this.morningHour
+    if (type === 'noon') return this.noonHour
+    if (type === 'evening') return this.eveningHour
+    return 0
+  }
+
+  getMinute(type: string): number {
+    if (type === 'morning') return this.morningMinute
+    if (type === 'noon') return this.noonMinute
+    if (type === 'evening') return this.eveningMinute
+    return 0
+  }
+
+  // build
+  build() {
+    Column() {
+      Text('æé†’è®¾ç½®')
+        .fontSize(24)
+        .fontWeight(FontWeight.Bold)
+        .padding(16)
+
+      // æ”¹åŠ¨1ï¼šä¼ å…¥ getter å’Œ setterï¼Œè€Œä¸æ˜¯ boolean å€¼
+      this.buildReminderCard('æ—©æ™¨æé†’', 'morning', () => this.morningOn, val => this.morningOn = val)
+      this.buildReminderCard('ä¸­åˆæé†’', 'noon', () => this.noonOn, val => this.noonOn = val)
+      this.buildReminderCard('æ™šä¸Šæé†’', 'evening', () => this.eveningOn, val => this.eveningOn = val)
+
+      // å ä½ç©ºç™½ï¼ŒæŠŠæŒ‰é’®æŽ¨åˆ°åº•éƒ¨
+      Column() {}.layoutWeight(1)
+
+      // ===== è·³è½¬å¡ç‰‡æŒ‰é’® =====
+      Column() {
+        Text('è¿”å›žä¸»é¡µ')
+          .fontSize(20)
+          .fontWeight(FontWeight.Medium)
+      }
+      .width('60%')
+      .padding(20)
+      .backgroundColor('#FFFFFF')
+      .borderRadius(16)
+      .shadow({ radius: 10, color: '#00000022', offsetX: 0, offsetY: 4 })
+      .onClick(() => {
+        router.pushUrl({ url: 'pages/Index' })
+      })
+      .alignItems(HorizontalAlign.Center)
+    }
+    .padding(16)
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#f5f5f5')
+  }
+
+  //  æ”¹åŠ¨2ï¼šbindVal -> getVal()ï¼Œé€šè¿‡å‡½æ•°å®žæ—¶è¯»å–çŠ¶æ€
+  //  æ”¹åŠ¨3ï¼šonToggle(!getVal()) æ›¿ä»£ !bindValï¼Œä¿®å¤çŠ¶æ€ä¸æ›´æ–°é—®é¢˜
+
+  // ä¸€ä¸ªç»„ä»¶
+  @Builder
+  buildReminderCard(
+    subtitle: string,
+    type: string,
+    getVal: () => boolean,
+    setVal: (val: boolean) => void
+  ): void {
+    Row({ space: 10}) {
+      // å·¦ä¾§æ—¶é—´+æè¿°
+      Column() {
+        // æ–°å¢žï¼šç‚¹å‡» Text å¯è·³è½¬åˆ° TimePickerPage
+        Text(`${this.getHour(type).toString().padStart(2, '0')}:${this.getMinute(type).toString().padStart(2, '0')}`)
+          .fontSize(24)
+          .fontWeight(FontWeight.Medium)
+          .onClick(() => {
+            router.pushUrl({
+              url: 'pages/TimePickerPage',
+              params: {
+                hour: this.getHour(type),       // ä¼ é€’ hour
+                minute: this.getMinute(type),
+                type: type
+              }
+            })
+          })
+
+        Text(subtitle)
+          .fontSize(14)
+          .fontColor('#888888')
+          .margin({ top: 4 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .flexGrow(1)  // å·¦ä¾§è‡ªåŠ¨å ä½
+      .justifyContent(FlexAlign.Start)   // æ—¶é—´é å·¦
+
+      // å³ä¾§å¼€å…³
+      Toggle({
+        type: ToggleType.Switch,
+        isOn: getVal()
+      })
+        .onClick(() => {
+          const newVal = !getVal()
+          setVal(newVal)
+          this.showToast(subtitle.replace('æé†’', ''), newVal)
+          // ä¿å­˜
+          storageUtil.save(`${type}On`, newVal)
+
+        })
+        .padding(10)
+        .backgroundColor(getVal() ? '#ffbadabb' : '#f2f2f2') // æ ¹æ®å¼€å…³çŠ¶æ€å˜è‰²ï¼Œå¼€å¯ä¸ºç»¿è‰²ï¼Œå…³é—­ä¸ºç°è‰²
+        .borderRadius(8)
+    }
+    .alignItems(VerticalAlign.Center)
+    .padding(12)
+    .backgroundColor($r('sys.color.white'))
+    .borderRadius(12)
+    .margin({ top: 8 })
+    .width('100%')
+  }
+
+  showToast(label: string, value: boolean) {
+    promptAction.showToast({ message: `${label}æé†’ï¼š${value ? 'å·²å¼€å¯' : 'å·²å…³é—­'}` })
+  }
+}
+ÀÔrD”²@ohos.promptAction¬@ohos.router»../common/utils/StorageUtil¿../common/utils/ReminderServiceÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ` hvigor_ignore_D:_software_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÔrF‘¯hostModulesInfo‘ÔrG’²hostDependencyName®hostModuleName²@ohos.promptAction¥entryÃªoh-resolveÂEAÃÙZ hvigor_ignore_D:_software_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.router.d.tsF“G¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryÃªoh-resolveÂEAÂÙUD:\software\HarmonyOs-Clock-Demo-main\entry\src\main\ets\common\utils\StorageUtil.etsAÃªoh-resolveÂEAÂÙYD:\software\HarmonyOs-Clock-Demo-main\entry\src\main\ets\common\utils\ReminderService.etsAÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings³ReminderSettings.js ‘´ReminderSettings.etsÜP’”    ”  –”   ” ” ” ”- -”. -–”   ” ” ” ”! !”" !˜”   ” ” ” ”5 5”6 5”7 6”> =š”   ” ”	 	” ” ”# #”ÌD ÌD”ÌE ÌE”ÌF ÌG”ÌO ÌP’” ” ‘”  ’”8 ”< "’”: ”;  ’”< !”= "’”5 ”:  ’”7 ”9 ’”9 ”: ’”8 ”= #’”: ”< !’”< !”= "’”  ”  ‘” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’”  ”  ’” !” !™” "” "
+” "” "”" "”# "”' "#”( "?”) "?š” #” #” #” #” #”  #”! #”" #”# #”5 #1’” %” %ž” &” &” &	” &” &”$ & ”% &!”0 &,”1 &-”< &8”> &:”ÌB &>”ÌC &?”ÌD &?ž” '” '” '	” '” '”& '"”' '#”1 '-”2 '.”? ';”ÌA '=”ÌB '>”ÌC '?”ÌD '?ž” (” (” (	” (” (”( ($”) (%”3 (/”4 (0”ÌC (?”ÌE (ÌA”ÌF (ÌB”ÌG (ÌC”ÌH (ÌCž” *” *” *	” *” *”! *”" *”- *)”. **”6 *2”8 *4”= *9”> *:”? *:ž” +” +” +	” +” +”# +”$ + ”. +*”/ ++”9 +5”; +7”= +9”> +:”? +:ž” ,” ,” ,	” ,” ,”% ,!”& ,"”0 ,,”1 ,-”= ,9”? ,;”Ì@ ,<”ÌA ,=”ÌB ,=ž” .” .” .	” .” .”$ . ”% .!”0 .,”1 .-”< .8”> .:”ÌC .?”ÌD .Ì@”ÌE .Ì@ž” /” /” /	” /” /”& /"”' /#”1 /-”2 /.”? /;”ÌA /=”ÌC /?”ÌD /Ì@”ÌE /Ì@ž” 0” 0” 0	” 0” 0”( 0$”) 0%”3 0/”4 00”ÌC 0?”ÌE 0ÌA”ÌF 0ÌB”ÌG 0ÌC”ÌH 0ÌC’” 2” 2™” 3” 3
+” 3” 3” 3” 3”' 3#”) 39”* 39˜” 4” 4” 4” 4”  4”" 4”$ 4”, 4'–” 5” 5
+” 5” 5” 5” 5˜” 6” 6” 6” 6” 6”$ 6”- 6%”/ 6'™” 7
+” 7” 7”$ 7”' 7”- 7#”. 7$”2 7(”3 7(™” 8
+” 8” 8”& 8”) 8”/ 8%”0 8&”6 8,”7 8,œ” 9
+” 9”  9”$ 9”% 9”2 9(”4 9*”: 90”; 91”? 95”Ì@ 96”ÌA 96œ” :
+” :”  :”$ :”% :”4 :*”6 :,”< :2”= :3”ÌC :9”ÌD ::”ÌE ::‘” ;	˜” ;” ;” ;”  ;”$ ;”) ;#”/ ;)”1 ;+™” <
+” <” <”! <”$ <”* < ”+ <!”/ <%”0 <%™” =
+” =” =”# =”& =”, ="”- =#”3 =)”4 =)œ” >
+” >”  >”$ >”% >”/ >%”1 >'”7 >-”8 >.”< >2”= >3”> >3œ” ?
+” ?”  ?”$ ?”% ?”1 ?'”3 ?)”9 ?/”: ?0”Ì@ ?6”ÌA ?7”ÌB ?7‘” Ì@	˜” Ì@” Ì@” Ì@”  Ì@”$ Ì@”) Ì@#”2 Ì@,”4 Ì@.™” ÌA
+” ÌA” ÌA”$ ÌA”' ÌA”- ÌA#”. ÌA$”2 ÌA(”3 ÌA(™” ÌB
+” ÌB” ÌB”& ÌB”) ÌB”/ ÌB%”0 ÌB&”6 ÌB,”7 ÌB,œ” ÌC
+” ÌC”  ÌC”$ ÌC”% ÌC”2 ÌC(”4 ÌC*”: ÌC0”; ÌC1”? ÌC5”Ì@ ÌC6”ÌA ÌC6œ” ÌD
+” ÌD”  ÌD”$ ÌD”% ÌD”4 ÌD*”6 ÌD,”< ÌD2”= ÌD3”ÌC ÌD9”ÌD ÌD:”ÌE ÌD:‘” ÌE	‘” ÌF‘”	 ÌG’” ÌI” ÌIÜ (” ÌJ” ÌJ” ÌK” ÌK
+”  ÌK”) ÌK”+ ÌK”/ ÌK”0 ÌK”; ÌK&”= ÌK(”ÌA ÌK,”ÌB ÌK-”ÌO ÌK:”ÌQ ÌL”ÌU ÌL
+”ÌV ÌL”Ì\ ÌL”Ì^ ÌL”Ìb ÌL”Ìc ÌL”Ìk ÌL ”Ìm ÌL"”Ìq ÌL&”Ìr ÌL'”Ì| ÌL1”Ì~ ÌM”Ì‚ ÌM
+”Ìƒ ÌM”ÌŒ ÌM”ÌŽ ÌM”Ì’ ÌM”Ì“ ÌM”Ìž ÌM&”Ì  ÌM(”Ì¤ ÌM,”Ì¥ ÌM-”Ì² ÌM:”Ì³ ÌN”Ì´ ÌN’” ÌO” ÌO’” ÌQ” ÌQ
+”” ÌR” ÌR	” ÌR
+” ÌR•” ÌS” ÌS” ÌS” ÌS” ÌS–” ÌS” ÌS#” ÌS'” ÌS(”# ÌS3”$ ÌS3•” ÌT” ÌT” ÌT” ÌT” ÌT–” ÌT” ÌT ” ÌT$” ÌT%”  ÌT-”! ÌT-•” ÌU” ÌU” ÌU” ÌU” ÌU–” ÌU” ÌU#” ÌU'” ÌU(”# ÌU3”$ ÌU3”” ÌV” ÌV” ÌV” ÌV’” ÌW” ÌW”” ÌY” ÌY” ÌY” ÌY•” ÌZ” ÌZ” ÌZ” ÌZ” ÌZ–” ÌZ” ÌZ#” ÌZ'” ÌZ(”% ÌZ5”& ÌZ5•” Ì[” Ì[” Ì[” Ì[” Ì[–” Ì[” Ì[ ” Ì[$” Ì[%”" Ì[/”# Ì[/•” Ì\” Ì\” Ì\” Ì\” Ì\–” Ì\” Ì\#” Ì\'” Ì\(”% Ì\5”& Ì\5”” Ì]” Ì]” Ì]” Ì]’” Ì^” Ì^’” Ì`” Ì`
+‘” Ìa’” Ìb” Ìb
+–” Ìb” Ìb
+” Ì€” Ì€” Ì€” Ì€–” Ìb” Ìb
+” Ì” Ì
+” Ì” Ì–” Ìb” Ìb
+” Ì‚” Ì‚” Ì‚”  Ì‚–” Ìb” Ìb
+” Ìƒ”" Ìƒ”# Ìƒ”, Ìƒ”” Ìc” Ìc
+” Ìc” Ìc–” Ìc” Ìc
+” Ìd	” Ìd” Ìd” Ìd˜” Ìc” Ìc
+” Ìe	” Ìe” Ìe”& Ìe”' Ìe”+ Ìe#–” Ìc” Ìc
+” Ìf	” Ìf” Ìf” Ìf’” Ìc” Ìc
+’” Ìh”/ Ìh-Ü ” Ìi” Ìi
+” Ìi” Ìi”* Ìi”0 Ìi#”2 Ìi%”; Ìi.”= Ìi0”Ì@ Ìi3”ÌB Ìi5”ÌC Ìi6”ÌG Ìi:”ÌH Ìi;”ÌQ ÌiÌD”ÌS ÌiÌF”ÌV ÌiÌI”ÌW ÌiÌJ”ÌY ÌiÌL”ÌZ ÌiÌM”Ì^ ÌiÌQ”Ì_ ÌiÌR”Ìh ÌiÌ[”Ìk ÌiÌ^”Ìn ÌiÌa”Ìo ÌiÌbÜ ” Ìj” Ìj
+” Ìj” Ìj”* Ìj”0 Ìj#”2 Ìj%”8 Ìj+”: Ìj-”= Ìj0”? Ìj2”Ì@ Ìj3”ÌD Ìj7”ÌE Ìj8”ÌK Ìj>”ÌM ÌjÌ@”ÌP ÌjÌC”ÌQ ÌjÌD”ÌS ÌjÌF”ÌT ÌjÌG”ÌX ÌjÌK”ÌY ÌjÌL”Ì_ ÌjÌR”Ìb ÌjÌU”Ìe ÌjÌX”Ìf ÌjÌYÜ ” Ìk” Ìk
+” Ìk” Ìk”* Ìk”0 Ìk#”2 Ìk%”; Ìk.”= Ìk0”Ì@ Ìk3”ÌB Ìk5”ÌC Ìk6”ÌG Ìk:”ÌH Ìk;”ÌQ ÌkÌD”ÌS ÌkÌF”ÌV ÌkÌI”ÌW ÌkÌJ”ÌY ÌkÌL”ÌZ ÌkÌM”Ì^ ÌkÌQ”Ì_ ÌkÌR”Ìh ÌkÌ[”Ìk ÌkÌ^”Ìn ÌkÌa”Ìo ÌkÌb’” Ìm” Ìm’” Ìn” Ìn’” Ìm” Ìm–” Ìn” Ìn” Ìn” Ìn”  Ìn”! Ìn ’” Ìm” Ìm’” Ìn” Ìn’” Ìp”! Ìp’” Ìq” Ìq’” Ìp”! Ìp–” Ìq” Ìq” Ìv” Ìv” Ìv” Ìv’” Ìp”! Ìp–” Ìq” Ìq” Ìw” Ìw” Ìw” Ìw’” Ìp”! Ìp–” Ìq” Ìq” Ìx”" Ìx”# Ìx”, Ìx ’” Ìp”! Ìp–” Ìq” Ìq” Ìy” Ìy”  Ìy”" Ìy’” Ìp”! ÌpÜ ” Ìq” Ìq” Ìz” Ìz” Ìz” Ìz”" Ìz”$ Ìz”& Ìz”( Ìz”- Ìz!”/ Ìz#”: Ìz.”< Ìz0”ÌC Ìz7”ÌE Ìz9”ÌF Ìz:”ÌH Ìz<”ÌO ÌzÌC”ÌQ ÌzÌE”ÌR ÌzÌF”ÌT ÌzÌH’” Ìp”! Ìp—” Ìq” Ìq” Ì{” Ì{” Ì{” Ì{”  Ì{œ” Ì|” Ì|” Ì|” Ì|” Ì|”! Ì|”$ Ì|”& Ì|”3 Ì|+”5 Ì|-”6 Ì|.”7 Ì|.’” Ì}” Ì}’” Ìp”! Ìp˜” Ìq” Ìq” Ì~” Ì~” Ì~”- Ì~!”. Ì~"”4 Ì~(”” Ìr” Ìr” Ìr” Ìr–” Ìr” Ìr” Ìs” Ìs” Ìs” Ìs˜” Ìr” Ìr” Ìt” Ìt” Ìt”& Ìt ”' Ìt!”- Ìt'’” Ìr” Ìr’” Ìp” Ìp’” Ìq” Ìq’” Ìb” Ìb
+‘” Ì„’” Ì†”* Ì†(’” Ì‡”5 Ì‡3’” Ì‰” Ì‰	š” Ì‹” Ì‹” ÌŒ” ÌŒ”  Ì”$ Ì”& ÌŽ”, ÌŽ”. Ì”4 Ì"˜” Ì‘” Ì‘” Ì‘” Ì‘
+” Ì‘”  Ì‘”" Ì‘”$ Ì‘˜” Ì‘” Ì‘” Ì½” Ì½” Ì½”( Ì½”) Ì½”/ Ì½$–” Ì‘” Ì‘” Ì¾” Ì¾” Ì¾” Ì¾”” Ì‘” Ì‘” Ì¿” Ì¿–” Ì‘” Ì‘” ÌÀ” ÌÀ” ÌÀ” ÌÀš” Ì‘” Ì‘” ÌÁ” ÌÁ” ÌÁ” ÌÁ” ÌÁ” ÌÁ” ÌÁ”! ÌÁ–” Ì‘” Ì‘” ÌÂ” ÌÂ
+” ÌÂ” ÌÂ’” Ì’” Ì’’” Ì“” Ì“’” Ì’” Ì’˜” Ì“” Ì“” Ì¨” Ì¨” Ì¨”- Ì¨!”. Ì¨"”3 Ì¨'’” Ì’” Ì’–” Ì“” Ì“” Ì©” Ì©” Ì©” Ì©’” Ì’” Ì’˜” Ì“” Ì“” Ìª”! Ìª”" Ìª”+ Ìª”, Ìª ”1 Ìª%’” Ì””- Ì”)Ü &” Ì•” Ì•” Ì•” Ì•” Ì•”  Ì•”' Ì•”( Ì•”, Ì•!”- Ì•"”. Ì•#”6 Ì•+”8 Ì•-”9 Ì•.”ÌA Ì•6”ÌB Ì•7”ÌC Ì•8”ÌE Ì•:”ÌH Ì•=”ÌI Ì•>”ÌM Ì•ÌB”ÌQ Ì•ÌF”ÌR Ì•ÌG”Ì[ Ì•ÌP”Ì\ Ì•ÌQ”Ì` Ì•ÌU”Ìa Ì•ÌV”Ìb Ì•ÌW”Ìj Ì•Ì_”Ìl Ì•Ìa”Ìm Ì•Ìb”Ìu Ì•Ìj”Ìv Ì•Ìk”Ìw Ì•Ìl”Ìy Ì•Ìn”Ì| Ì•Ìq”Ì} Ì•Ìr”Ì Ì•Ìt’” Ì””- Ì”)–” Ì•” Ì•” Ì–” Ì–” Ì–” Ì–’” Ì””- Ì”)˜” Ì•” Ì•” Ì—” Ì—” Ì—”& Ì— ”' Ì—!”- Ì—'’” Ì””- Ì”)—” Ì•” Ì•” Ì˜” Ì˜” Ì˜” Ì˜” Ì˜•” Ì™” Ì™” Ì™” Ì™” Ì™”” Ìš” Ìš” Ìš”/ Ìš)“” Ì›” Ì›” Ì›™” Ìœ” Ìœ” Ìœ”" Ìœ”# Ìœ”* Ìœ"”+ Ìœ#”/ Ìœ'”0 Ìœ(™” Ì” Ì”  Ì”$ Ì”% Ì”. Ì&”/ Ì'”3 Ì+”4 Ì,”” Ìž” Ìž” Ìž”" Ìž‘” ÌŸ“” Ì ” Ì ” Ì ’” Ì¡
+” Ì¡’” Ì””) Ì”)’” Ì•” Ì•”” Ì£” Ì£” Ì£”  Ì£–” Ì£” Ì£” Ì¤” Ì¤” Ì¤” Ì¤–” Ì£” Ì£” Ì¥” Ì¥” Ì¥”$ Ì¥š” Ì£” Ì£” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦”  Ì¦”" Ì¦’” Ì£” Ì£’” Ì’” Ì’’” Ì“” Ì“’” Ì¬” Ì¬“” Ì­” Ì­” Ì­–” Ì®” Ì®” Ì®”  Ì®”! Ì®”' Ì®•” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯‘” Ì°’” Ì¬” Ì¬—” Ì­” Ì­” Ì±	” Ì±” Ì±” Ì±”  Ì±˜” Ì²
+” Ì²” Ì²” Ì²”  Ì²”& Ì² ”( Ì²"”) Ì²"–” Ì³
+” Ì³” Ì³” Ì³” Ì³” Ì³Ü ” Ì´
+” Ì´” Ì´” Ì´” Ì´”' Ì´!”( Ì´"”/ Ì´)”0 Ì´*”4 Ì´.”6 Ì´0”8 Ì´2”9 Ì´3”; Ì´5”ÌA Ì´;”ÌB Ì´<”ÌC Ì´<’” Ìµ
+” Ìµœ” Ì¶
+” Ì¶” Ì¶”  Ì¶”! Ì¶”$ Ì¶”( Ì¶"”, Ì¶&”. Ì¶(”4 Ì¶.”5 Ì¶/”6 Ì¶/’” Ì¸” Ì¸	’” Ì¬” Ì¬–” Ì­” Ì­” Ì¹	” Ì¹” Ì¹” Ì¹’” Ì¬” Ì¬Ÿ” Ì­” Ì­” Ìº	”" Ìº”# Ìº”) Ìº”+ Ìº!”, Ìº"”- Ìº#”. Ìº$”9 Ìº/”: Ìº0”; Ìº1”< Ìº2”ÌE Ìº;’” Ì¬” Ì¬–” Ì­” Ì­” Ì»	” Ì»”  Ì»”! Ì»’” Ì¬” Ì¬’” Ì­” Ì­’” Ì‘” Ì‘‘” ÌÃ–” ÌÅ” ÌÅ” ÌÅ” ÌÅ” ÌÅ” ÌÅ)Ü ” ÌÆ” ÌÆ” ÌÆ” ÌÆ” ÌÆ”! ÌÆ”( ÌÆ$”* ÌÆ&”- ÌÆ)”2 ÌÆ.”8 ÌÆ4”= ÌÆ9”> ÌÆ:”? ÌÆ;”Ì@ ÌÆ<”ÌE ÌÆÌA”ÌF ÌÆÌB”ÌG ÌÆÌC”ÌH ÌÆÌD”ÌM ÌÆÌI”ÌO ÌÆÌK”ÌQ ÌÆÌM”ÌR ÌÆÌN”ÌS ÌÆÌN’” ÌÇ” ÌÇÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜY‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  ÌŽ ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ìž ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌÐ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  ÌÝ ‘”  ÌÞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìð ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìý ‘”  Ìþ ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache”ÔrL•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ™ÌÇ‘ÔrM”¤type¥start£end¥local¶ImportDefaultSpecifierÌ Ì¬ÔrN”¤type¥start£end¤nameªIdentifierÌ Ì¬¬promptActionÔrO•¤type¥start£end¥value£raw§LiteralÌ²ÌÆ²@ohos.promptAction´'@ohos.promptAction'L±ImportDeclarationÌÉÌë‘M¶ImportDefaultSpecifierÌÐÌÖNªIdentifierÌÐÌÖ¦routerO§LiteralÌÜÌê¬@ohos.router®'@ohos.router'L±ImportDeclarationÌíÍ#‘M¶ImportDefaultSpecifierÌôÌÿNªIdentifierÌôÌÿ«storageUtilO§LiteralÍÍ"»../common/utils/StorageUtil½'../common/utils/StorageUtil'L±ImportDeclarationÍ-Ír‘ÔrP•¤type¥start£end¨imported¥local¯ImportSpecifierÍ6ÍHNªIdentifierÍ6ÍH²startReminderCheckNªIdentifierÍ6ÍH²startReminderCheckO§LiteralÍPÍq¿../common/utils/ReminderServiceÙ!'../common/utils/ReminderService'
