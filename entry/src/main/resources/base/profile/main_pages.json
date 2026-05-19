@@ -5,6 +5,7 @@
     "pages/TimePickerPage",
     "pages/MorningPage",
     "pages/NoonPage",
-    "pages/EveningPage"
+    "pages/EveningPage",
+    "pages/MealCheckInPage"
   ]
 }

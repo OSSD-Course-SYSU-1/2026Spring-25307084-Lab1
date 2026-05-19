@@ -9,7 +9,7 @@ class StorageUtil {
     this.time = preferences.getPreferencesSync(context, { name: 'reminder_settings' })
   }
 
-  save(key: string, value: number | boolean) {
+  save(key: string, value: number | boolean | string) {
     this.time?.putSync(key, value)
     this.time?.flushSync()
   }
@@ -22,6 +22,11 @@ class StorageUtil {
   loadBoolean(key: string, defaultVal: boolean): boolean {
     const result = this.time?.getSync(key, defaultVal)
     return typeof result === 'boolean' ? result : defaultVal
+  }
+  
+  loadString(key: string, defaultVal: string): string {
+    const result = this.time?.getSync(key, defaultVal)
+    return typeof result === 'string' ? result : defaultVal
   }
 }
 

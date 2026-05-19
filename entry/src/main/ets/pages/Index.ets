@@ -58,6 +58,44 @@ struct Index {
       }
       .width('85%')
       .margin({ top: 20 })
+      
+      // ===== 三餐打卡按钮 =====
+      Column() {
+        Row() {
+          Text('📋')
+            .fontSize(32)
+          
+          Column() {
+            Text('三餐打卡')
+              .fontSize(22)
+              .fontWeight(FontWeight.Bold)
+            
+            Text('记录每日饮食健康情况')
+              .fontSize(13)
+              .fontColor('#666666')
+              .margin({ top: 4 })
+          }
+          .alignItems(HorizontalAlign.Start)
+          .margin({ left: 16 })
+          .layoutWeight(1)
+          
+          // 右箭头
+          Text('›')
+            .fontSize(28)
+            .fontColor('#999999')
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+      }
+      .width('85%')
+      .padding(20)
+      .backgroundColor('#E8F5E9')
+      .borderRadius(16)
+      .shadow({ radius: 8, color: '#00000022', offsetX: 0, offsetY: 4 })
+      .margin({ top: 24 })
+      .onClick(() => {
+        router.pushUrl({ url: 'pages/MealCheckInPage' })
+      })
 
     }
     .width('100%')
