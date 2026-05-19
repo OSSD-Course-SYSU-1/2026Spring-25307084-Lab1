@@ -1,10 +1,12 @@
 // TimePickerPage.ets
 import router from '@ohos.router'  // 导入路由功能
+import { common } from '@kit.AbilityKit'
+import storageUtil from '../common/utils/StorageUtil'
 
 interface TimePickerType {
   hour: number
   minute: number
-  type: string  // 只接收 type
+  type: string  // morning, noon, evening
 }
 
 @Entry
@@ -12,17 +14,36 @@ interface TimePickerType {
 struct TimePickerPage {
   @State selectedTime: Date = new Date()
   private type: string = ''  // 用来保存 type
+  private initialHour: number = 0
+  private initialMinute: number = 0
 
   aboutToAppear() {
+    const context = getContext(this) as common.UIAbilityContext
+    storageUtil.init(context)
+    
     const params = router.getParams() as TimePickerType
     if (params) {
-      this.type = params.type ?? ''  // 保存 type
+      this.type = params.type ?? ''
+      this.initialHour = params.hour ?? 0
+      this.initialMinute = params.minute ?? 0
+      
+      // 设置初始时间
+      const newTime = new Date()
+      newTime.setHours(this.initialHour)
+      newTime.setMinutes(this.initialMinute)
+      this.selectedTime = newTime
     }
   }
 
   build() {
     // 整体页面布局
     Column(){
+      // 标题
+      Text(this.getPageTitle())
+        .fontSize(24)
+        .fontWeight(FontWeight.Bold)
+        .margin({ bottom: 20 })
+      
       // 时间选择器
       TimePicker({ selected: this.selectedTime })
         .onChange((value: TimePickerResult) => {
@@ -53,14 +74,14 @@ struct TimePickerPage {
         .onClick(() => {
           const hour = this.selectedTime.getHours()
           const minute = this.selectedTime.getMinutes()
-
+          
+          // 保存时间到对应的存储键
+          this.saveTime(hour, minute)
+          
+          // 返回到对应的页面
+          const targetPage = this.getTargetPage()
           router.replaceUrl({
-            url: 'pages/ReminderSettings',
-            params: {
-              hour: hour,
-              minute: minute,
-              type: this.type  // 返回时带上 type
-            }
+            url: targetPage
           })
         })
     }
@@ -69,5 +90,51 @@ struct TimePickerPage {
     .alignItems(HorizontalAlign.Center)     // 水平居中
     .justifyContent(FlexAlign.Center)       // 垂直居中
     .padding(20)
+  }
+  
+  // 获取页面标题
+  private getPageTitle(): string {
+    switch (this.type) {
+      case 'morning':
+        return '🌅 设置早餐提醒时间'
+      case 'noon':
+        return '☀️ 设置午餐提醒时间'
+      case 'evening':
+        return '🌙 设置晚餐提醒时间'
+      default:
+        return '设置提醒时间'
+    }
+  }
+  
+  // 获取目标页面
+  private getTargetPage(): string {
+    switch (this.type) {
+      case 'morning':
+        return 'pages/MorningPage'
+      case 'noon':
+        return 'pages/NoonPage'
+      case 'evening':
+        return 'pages/EveningPage'
+      default:
+        return 'pages/Index'
+    }
+  }
+  
+  // 保存时间
+  private saveTime(hour: number, minute: number): void {
+    switch (this.type) {
+      case 'morning':
+        storageUtil.save('morningAlarmHour', hour)
+        storageUtil.save('morningAlarmMinute', minute)
+        break
+      case 'noon':
+        storageUtil.save('noonAlarmHour', hour)
+        storageUtil.save('noonAlarmMinute', minute)
+        break
+      case 'evening':
+        storageUtil.save('eveningAlarmHour', hour)
+        storageUtil.save('eveningAlarmMinute', minute)
+        break
+    }
   }
 }
