@@ -1,4 +1,4 @@
-# HarmonyOS 饭点提醒应用 - 工程文件描述
+# HarmonyOS 饭点提醒应用
 
 ## 📋 项目概述
 
@@ -19,6 +19,106 @@
 4. **系统通知** - 到达设定时间时发送系统通知提醒
 5. **数据持久化** - 保存用户的提醒设置
 
+## 🆕 新增功能亮点
+
+### 1. 🍽️ 智能饮食推荐系统
+
+**新增文件**: `DietUtil.ets`
+
+**核心功能**:
+- **季节感知**: 自动识别当前季节，提供应季食物推荐
+- **营养分析**: 包含蛋白质、碳水化合物、维生素、矿物质、膳食纤维五大营养类型
+- **食物数据库**: 内置30+种常见食物，包含热量、营养、描述等详细信息
+- **智能推荐**: 根据时段（早/中/晚）和季节推荐合适的食物组合
+- **健康提示**: 为每个时段提供季节化的健康饮食建议
+
+**数据结构**:
+```typescript
+// 营养类型枚举
+enum NutritionType {
+  PROTEIN = '蛋白质',
+  CARBOHYDRATE = '碳水化合物',
+  VITAMIN = '维生素',
+  MINERAL = '矿物质',
+  FIBER = '膳食纤维'
+}
+
+// 季节枚举
+enum Season {
+  SPRING = '春季',
+  SUMMER = '夏季',
+  AUTUMN = '秋季',
+  WINTER = '冬季'
+}
+```
+
+**推荐逻辑**:
+- **早餐**: 注重蛋白质和碳水化合物，提供充足能量
+- **午餐**: 均衡营养，荤素搭配
+- **晚餐**: 清淡为主，低热量高纤维
+
+### 2. 🌅 时段专属页面
+
+**新增文件**: `MorningPage.ets`, `NoonPage.ets`, `EveningPage.ets`
+
+**功能特点**:
+- **个性化界面**: 每个时段拥有独特的主题色彩和图标
+  - 早晨: 🌅 暖橙色调，充满活力
+  - 中午: ☀️ 明亮黄色调，精力充沛
+  - 晚上: 🌙 柔和紫色调，温馨舒适
+
+- **集成功能**:
+  - 时段闹钟设置与开关
+  - 当前季节信息展示
+  - 智能饮食推荐列表（含热量和营养标签）
+  - 时段专属健康小贴士
+
+**UI设计**:
+- 卡片式布局，圆角阴影效果
+- 食物项展示：名称、描述、热量、营养标签
+- 健康提示：编号列表，易于阅读
+
+### 3. ✅ 三餐打卡系统
+
+**新增文件**: `MealCheckInPage.ets`
+
+**核心功能**:
+
+#### 健康等级评估
+- **健康（绿色）**: 营养均衡，符合推荐
+- **中等（黄色）**: 尚可改进，部分达标
+- **不健康（红色）**: 需要改善，偏离推荐
+
+#### 日视图功能
+- 显示当日三餐打卡状态
+- 每餐独立打卡，记录时间和健康等级
+- 实时统计：已打卡数、健康餐数、不健康餐数
+- 打卡时间范围提示：
+  - 早餐: 6:00 - 9:00
+  - 午餐: 11:00 - 13:00
+  - 晚餐: 17:00 - 20:00
+
+#### 月视图功能
+- 日历网格展示整月打卡情况
+- 健康状态指示点（绿/黄/红）
+- 月份切换（上一月/下一月）
+- 月度统计：
+  - 总天数
+  - 打卡天数
+  - 健康天数
+  - 中等天数
+  - 不健康天数
+
+#### 数据持久化
+- 按日期存储打卡记录
+- 支持历史数据查看
+- 自动保存打卡状态
+
+**交互设计**:
+- 点击餐卡弹出健康等级选择器
+- 顶部按钮切换日/月视图
+- 流畅的动画过渡效果
+
 ## 📁 项目结构
 
 ```
@@ -31,22 +131,27 @@ HarmonyOs-Clock-Demo-main/
 │   │   │   ├── ets/                   # ArkTS源代码
 │   │   │   │   ├── common/
 │   │   │   │   │   └── utils/         # 工具类目录
-│   │   │   │   │       ├── FlipNumber.ets           # 翻页时钟组件
-│   │   │   │   │       ├── NotificationUtil.ets     # 通知工具类
-│   │   │   │   │       ├── ReminderService.ets      # 提醒服务
-│   │   │   │   │       └── StorageUtil.ets          # 数据存储工具
+│   │   │   │   │       ├── DietUtil.ets              # 🆕 饮食推荐工具类
+│   │   │   │   │       ├── FlipNumber.ets            # 翻页时钟组件
+│   │   │   │   │       ├── NotificationUtil.ets      # 通知工具类
+│   │   │   │   │       ├── ReminderService.ets       # 提醒服务
+│   │   │   │   │       └── StorageUtil.ets           # 数据存储工具
 │   │   │   │   ├── entryability/
-│   │   │   │   │   └── EntryAbility.ets             # 应用入口能力
+│   │   │   │   │   └── EntryAbility.ets              # 应用入口能力
 │   │   │   │   ├── entrybackupability/
-│   │   │   │   │   └── EntryBackupAbility.ets       # 备份能力
+│   │   │   │   │   └── EntryBackupAbility.ets        # 备份能力
 │   │   │   │   └── pages/             # 页面目录
-│   │   │   │       ├── Index.ets                     # 首页(时钟展示)
-│   │   │   │       ├── ReminderSettings.ets          # 提醒设置页
-│   │   │   │       └── TimePickerPage.ets            # 时间选择页
+│   │   │   │       ├── Index.ets                      # 首页(时钟展示)
+│   │   │   │       ├── MorningPage.ets                # 🆕 早晨页面
+│   │   │   │       ├── NoonPage.ets                   # 🆕 中午页面
+│   │   │   │       ├── EveningPage.ets                # 🆕 晚上页面
+│   │   │   │       ├── MealCheckInPage.ets            # 🆕 三餐打卡页面
+│   │   │   │       ├── ReminderSettings.ets           # 提醒设置页
+│   │   │   │       └── TimePickerPage.ets             # 时间选择页
 │   │   │   ├── resources/             # 资源文件
 │   │   │   │   └── base/
 │   │   │   │       └── profile/
-│   │   │   │           └── main_pages.json          # 页面路由配置
+│   │   │   │           └── main_pages.json           # 页面路由配置
 │   │   │   └── module.json5           # 模块配置文件
 │   │   ├── mock/                      # 模拟数据
 │   │   └── ohosTest/                  # 测试代码
@@ -56,358 +161,254 @@ HarmonyOs-Clock-Demo-main/
 ├── hvigor/                            # Hvigor构建系统
 │   └── hvigor-config.json5            # Hvigor配置
 ├── pngs/                              # 截图资源
-├── README.md                          # 项目说明文档
-└── 工程文件描述.md                     # 本文档
+└── README.md                          # 项目说明文档
 ```
 
 ## 🔧 核心文件详解
 
-### 1. 配置文件
+### 新增工具类
 
-#### app.json5 - 应用全局配置
-```json5
-{
-  "app": {
-    "bundleName": "com.example.harmonyos_clock_demo",  // 应用包名
-    "vendor": "example",                                // 开发者
-    "versionCode": 1000000,                            // 版本号
-    "versionName": "1.0.0",                            // 版本名称
-    "icon": "$media:app_icon",                         // 应用图标
-    "label": "$string:app_name"                        // 应用名称
-  }
-}
-```
+#### DietUtil.ets - 饮食推荐工具类
 
-#### module.json5 - 模块配置
-- **模块类型**: entry (入口模块)
-- **支持设备**: phone, tablet, 2in1
-- **主能力**: EntryAbility
-- **扩展能力**: EntryBackupAbility (备份)
-- **页面路由**: 通过 main_pages.json 配置
+**主要功能**:
+- `getCurrentSeason()`: 获取当前季节
+- `getDietRecommendation(timeOfDay)`: 根据时段获取饮食推荐
+- `getNutritionAdvice()`: 获取营养建议
 
-#### main_pages.json - 页面路由配置
-```json
-{
-  "src": [
-    "pages/Index",              // 首页
-    "pages/ReminderSettings",   // 提醒设置页
-    "pages/TimePickerPage"      // 时间选择页
-  ]
-}
-```
-
-### 2. 页面文件
-
-#### Index.ets - 首页
-**功能**: 展示翻页时钟，提供跳转到提醒设置的入口
-
-**核心实现**:
-- 使用 `@State` 管理小时和分钟状态
-- 通过 `setInterval` 每秒更新时间
-- 集成 `FlipNumber` 组件实现翻页效果
-- 点击跳转时请求通知权限
-
-**关键代码片段**:
+**食物数据库示例**:
 ```typescript
-aboutToAppear() {
-  this.updateTime()
-  setInterval(() => {
-    this.updateTime()
-  }, 1000)
-}
-
-updateTime() {
-  const now = new Date()
-  this.hours = now.getHours().toString().padStart(2, '0')
-  this.minutes = now.getMinutes().toString().padStart(2, '0')
+{
+  name: '鸡蛋',
+  nutrition: [NutritionType.PROTEIN],
+  calories: 78,
+  description: '优质蛋白，易于消化',
+  season: [Season.SPRING, Season.SUMMER, Season.AUTUMN, Season.WINTER]
 }
 ```
 
-#### ReminderSettings.ets - 提醒设置页
-**功能**: 管理三种饭点提醒的开关和时间设置
+**季节化提示**:
+- 春季: 易困倦，多吃富含维生素B的食物
+- 夏季: 出汗多，补充水分和矿物质
+- 秋季: 干燥，多吃润肺食物
+- 冬季: 寒冷，适当增加热量摄入
 
-**核心实现**:
-- 使用 `@State` 管理三种提醒的状态（开关、小时、分钟）
-- 通过 `StorageUtil` 持久化保存设置
-- 使用 `@Builder` 构建可复用的提醒卡片组件
-- 启动 `ReminderService` 定时检查提醒
+### 新增页面
+
+#### MorningPage.ets / NoonPage.ets / EveningPage.ets
+
+**页面结构**:
+1. **标题栏**: 时段图标 + 标题 + 副标题
+2. **闹钟设置卡片**: 开关 + 时间设置
+3. **季节信息卡片**: 当前季节 + 提示
+4. **饮食推荐卡片**: 推荐食物列表 + 总热量
+5. **健康提示卡片**: 编号列表的健康建议
+6. **返回按钮**: 返回主页
 
 **数据流**:
-1. 页面加载时从存储读取设置
-2. 接收 TimePickerPage 返回的时间参数
-3. 开关状态变化时保存到存储
-4. 启动定时提醒检查服务
+```
+页面加载
+  ↓
+初始化存储工具
+  ↓
+加载闹钟设置
+  ↓
+获取当前季节
+  ↓
+获取饮食推荐
+  ↓
+启动提醒检查
+```
 
-#### TimePickerPage.ets - 时间选择页
-**功能**: 提供时间选择器，修改提醒时间
+#### MealCheckInPage.ets - 三餐打卡页面
 
-**核心实现**:
-- 使用系统 `TimePicker` 组件
-- 接收路由参数中的提醒类型 (morning/noon/evening)
-- 选择完成后通过 `router.replaceUrl` 返回并传递新时间
+**状态管理**:
+```typescript
+@State todayRecords: MealRecord[]        // 今日打卡记录
+@State selectedDate: string              // 选中日期
+@State showHealthPicker: boolean         // 健康等级选择器显示状态
+@State currentMeal: string               // 当前选择的餐次
+@State showMonthView: boolean            // 月视图显示状态
+@State currentYear: number               // 当前年份
+@State currentMonth: number              // 当前月份
+```
 
-### 3. 工具类文件
+**核心方法**:
+- `checkIn(meal, healthLevel)`: 打卡并保存记录
+- `getStatistics()`: 获取今日统计信息
+- `getMonthStatistics()`: 获取月度统计信息
+- `getDayHealthStatus(dateStr)`: 获取指定日期的健康状态
 
-#### FlipNumber.ets - 翻页时钟组件
-**功能**: 显示单个数字的翻页效果
-
-**实现**:
-- 使用 `@Prop` 接收外部传入的值
-- 使用 `@State` 管理显示值
-- 在 `aboutToUpdate` 生命周期中更新显示
-
-#### NotificationUtil.ets - 通知工具类
-**功能**: 封装系统通知相关操作
-
-**主要方法**:
-- `requestNotificationPermission()`: 请求通知权限
-- `publishSimpleNotification()`: 发布简单文本通知
-
-**实现细节**:
-- 使用 `notificationManager` API
-- 添加 `SOCIAL_COMMUNICATION` 类型通知槽
-- 支持高优先级通知显示
-
-#### ReminderService.ets - 提醒服务
-**功能**: 定时检查当前时间并触发提醒
-
-**实现逻辑**:
-- 接收三种提醒的配置参数
-- 使用 `setInterval` 每分钟检查一次
-- 当前时间匹配时发布对应通知
-- 使用时间戳作为通知ID确保唯一性
-
-#### StorageUtil.ets - 数据存储工具
-**功能**: 封装首选项数据存储操作
-
-**主要方法**:
-- `init()`: 初始化 Preferences 实例
-- `save()`: 保存数据（支持 number 和 boolean）
-- `loadNumber()`: 读取数字类型数据
-- `loadBoolean()`: 读取布尔类型数据
-
-**实现细节**:
-- 使用 `preferences` API
-- 存储文件名: 'reminder_settings'
-- 同步操作确保数据一致性
-
-#### EntryAbility.ets - 应用入口
-**功能**: 应用生命周期管理
-
-**主要生命周期**:
-- `onCreate`: 应用创建时设置颜色模式
-- `onWindowStageCreate`: 加载主页面 'pages/Index'
-- `onDestroy`: 应用销毁
-- `onForeground/onBackground`: 前后台切换
+**UI组件**:
+- `buildMealCard(meal)`: 构建餐次卡片
+- `buildStatistics()`: 构建统计信息
+- `buildHealthPicker()`: 构建健康等级选择弹窗
+- `buildMonthView()`: 构建月视图
+- `buildCalendarGrid()`: 构建日历网格
 
 ## 🔄 数据流与状态管理
 
-### 状态管理架构
+### 新增数据流
+
+#### 饮食推荐数据流
 ```
-┌─────────────────────────────────────────┐
-│           Index Page                     │
-│  @State: hours, minutes                  │
-│  ↓ 定时更新 (1秒/次)                      │
-└─────────────────────────────────────────┘
-                    ↓ 跳转
-┌─────────────────────────────────────────┐
-│       ReminderSettings Page              │
-│  @State: morningOn/Hour/Minute           │
-│  @State: noonOn/Hour/Minute              │
-│  @State: eveningOn/Hour/Minute           │
-│  ↓ StorageUtil 持久化                     │
-│  ↓ ReminderService 定时检查               │
-└─────────────────────────────────────────┘
-                    ↓ 跳转
-┌─────────────────────────────────────────┐
-│       TimePickerPage                     │
-│  @State: selectedTime                    │
-│  ↓ 返回新时间                             │
-└─────────────────────────────────────────┘
+时段页面加载
+  ↓
+调用 getCurrentSeason()
+  ↓
+调用 getDietRecommendation(timeOfDay)
+  ↓
+过滤季节性食物
+  ↓
+根据时段推荐策略选择食物
+  ↓
+计算总热量
+  ↓
+生成健康提示
+  ↓
+渲染UI
 ```
 
-### 数据持久化流程
-1. 用户修改设置 → 触发状态更新
-2. 调用 `storageUtil.save()` → 保存到 Preferences
-3. 页面重新加载 → `aboutToAppear()` 读取存储
-4. 恢复用户设置 → 更新 UI 状态
+#### 打卡数据流
+```
+用户点击餐卡
+  ↓
+弹出健康等级选择器
+  ↓
+选择健康等级
+  ↓
+记录打卡时间和等级
+  ↓
+保存到 StorageUtil
+  ↓
+更新UI状态
+  ↓
+刷新统计信息
+```
 
 ## 🎨 UI设计特点
 
-### 设计风格
-- **卡片式布局**: 使用圆角卡片和阴影效果
-- **翻页时钟**: 模拟翻页效果的数字显示
-- **Material Design**: 借鉴现代设计语言
-- **交互反馈**: Toast提示和状态变化动画
+### 新增设计元素
 
-### 颜色方案
-- 主背景: `#f2f2f2` / `#f5f5f5` (浅灰)
-- 卡片背景: `#FFFFFF` (白色)
-- 强调色: `#ffbadabb` (粉紫色)
-- 文字颜色: `#666666` / `#888888` (灰色系)
+#### 时段主题色彩
+- **早晨**: `#FFE4B5` (暖橙色) - 温暖活力
+- **中午**: `#FFF9C4` (明亮黄) - 精力充沛
+- **晚上**: `#E1BEE7` (柔和紫) - 温馨舒适
+
+#### 健康等级色彩
+- **健康**: `#4CAF50` (绿色) - 营养均衡
+- **中等**: `#FFC107` (黄色) - 尚可改进
+- **不健康**: `#F44336` (红色) - 需要改善
+- **未打卡**: `#CCCCCC` (灰色) - 待评估
+
+#### 卡片设计
+- 圆角: 16px
+- 阴影: radius 8, color #00000022, offsetY 4
+- 内边距: 16px
+- 间距: 16px
+
+#### 营养标签图标
+- 🥩 蛋白质
+- 🌾 碳水化合物
+- 🍊 维生素
+- 💎 矿物质
+- 🥬 膳食纤维
 
 ## 🔌 使用的HarmonyOS API
 
-### 核心Kit
-1. **@kit.AbilityKit**
-   - `UIAbility`: 应用能力基类
-   - `router`: 页面路由
-   - `common.UIAbilityContext`: 应用上下文
+### 新增API使用
 
-2. **@kit.NotificationKit**
-   - `notificationManager`: 通知管理
-   - 通知权限请求
-   - 通知发布
+#### StorageUtil 扩展
+- 新增 `loadString()` 方法支持字符串存储
+- 用于保存打卡记录的JSON数据
 
-3. **@kit.ArkData**
-   - `preferences`: 首选项数据存储
-
-4. **@kit.ArkUI**
-   - `window`: 窗口管理
-   - UI组件和装饰器
-
-5. **@kit.PerformanceAnalysisKit**
-   - `hilog`: 日志输出
-
-### 组件使用
-- `@Entry`: 页面入口装饰器
-- `@Component`: 组件装饰器
-- `@State`: 状态变量装饰器
-- `@Prop`: 属性传递装饰器
-- `@Builder`: 构建器装饰器
-- `Column`, `Row`: 布局容器
-- `Text`, `Button`, `Toggle`: 基础组件
-- `TimePicker`: 时间选择器
-
-## 🚀 构建与运行
-
-### 构建配置
-- **构建工具**: Hvigor
-- **API类型**: stageMode
-- **混淆配置**: Release模式下可启用代码混淆
-
-### 运行要求
-- DevEco Studio
-- HarmonyOS SDK (建议最新版本)
-- 目标设备: Phone/Tablet/2in1
-
-## 📈 性能优化建议
-
-1. **定时器管理**
-   - 建议在页面销毁时清理定时器
-   - 考虑使用后台任务进行提醒检查
-
-2. **状态更新**
-   - 避免频繁的状态更新导致UI重绘
-   - 可考虑使用 `@Watch` 装饰器优化
-
-3. **数据存储**
-   - 批量保存减少IO操作
-   - 考虑异步操作提升响应速度
-
-## 🔐 权限说明
-
-### 已申请权限
-- **通知权限**: 用于发送饭点提醒通知
-  - 在用户点击"提醒设置"时动态申请
-  - 使用 `requestEnableNotification()` API
-
-### 权限处理流程
-1. 用户进入提醒设置页
-2. 自动请求通知权限
-3. 用户授权后可正常接收提醒
-4. 未授权时提醒功能受限
-
-## 📝 代码规范
-
-### 命名规范
-- **文件名**: PascalCase (如 `FlipNumber.ets`)
-- **组件名**: PascalCase (如 `Index`, `ReminderSettings`)
-- **方法名**: camelCase (如 `updateTime`, `buildReminderCard`)
-- **变量名**: camelCase (如 `morningOn`, `selectedTime`)
-
-### 注释规范
-- 文件顶部添加功能说明注释
-- 复杂逻辑添加行内注释
-- 公共方法添加文档注释
-
-### 代码组织
-- 按功能模块划分目录
-- 工具类统一放置在 `common/utils`
-- 页面文件统一放置在 `pages`
-
-## 🎯 未来扩展方向
-
-根据 README.md 中的规划，未来可扩展：
-
-1. **贪睡/延迟提醒功能**
-   - 添加延迟按钮
-   - 实现多次提醒机制
-
-2. **自定义提醒项**
-   - 支持动态添加提醒
-   - 不再限制三餐
-
-3. **重复周期设置**
-   - 每天/工作日/周末
-   - 自定义星期几
-
-4. **UI美化**
-   - 深色模式支持
-   - 更多主题选择
-   - 动画效果增强
-
-5. **多终端适配**
-   - 平板布局优化
-   - 折叠屏适配
-   - 响应式设计
+#### 路由参数传递
+```typescript
+router.pushUrl({
+  url: 'pages/MorningPage',
+  params: { /* 参数 */ }
+})
+```
 
 ## 📊 项目统计
 
+### 新增统计
+- **新增页面**: 4个 (MorningPage, NoonPage, EveningPage, MealCheckInPage)
+- **新增工具类**: 1个 (DietUtil)
+- **食物数据**: 30+ 种
+- **营养类型**: 5 种
+- **季节支持**: 4 季
+- **健康等级**: 4 级 (健康/中等/不健康/未打卡)
+
+### 总体统计
 - **总文件数**: 约100个文件（含Git对象）
-- **源代码文件**: 9个 .ets 文件
+- **源代码文件**: 15个 .ets 文件
 - **配置文件**: 10个 .json5 文件
-- **页面数量**: 3个主要页面
-- **工具类数量**: 4个工具类
-- **代码行数**: 约500行（不含注释和空行）
+- **页面数量**: 7个主要页面
+- **工具类数量**: 5个工具类
+- **代码行数**: 约1200行（不含注释和空行）
 
-## 🔗 依赖关系
+## 🚀 功能使用指南
 
-```
-Index.ets
-  ├── FlipNumber.ets
-  └── NotificationUtil.ets
+### 饮食推荐使用
 
-ReminderSettings.ets
-  ├── StorageUtil.ets
-  ├── ReminderService.ets
-  │   └── NotificationUtil.ets
-  └── TimePickerPage.ets
+1. 在主页点击时段按钮（早晨/中午/晚上）
+2. 进入对应时段页面
+3. 查看：
+   - 当前季节信息
+   - 推荐食物列表（含热量和营养标签）
+   - 健康小贴士
 
-EntryAbility.ets
-  └── Index.ets (页面加载)
-```
+### 三餐打卡使用
 
-## 📌 注意事项
+1. 在主页点击"三餐打卡"按钮
+2. **日视图**:
+   - 点击早餐/午餐/晚餐卡片
+   - 选择健康等级（健康/中等/不健康）
+   - 查看今日统计
+3. **月视图**:
+   - 点击右上角日历图标切换
+   - 查看整月打卡情况
+   - 切换月份查看历史记录
 
-1. **生命周期管理**
-   - 定时器需要在适当时机清理
-   - 页面切换时保存状态
+## 🎯 未来扩展方向
 
-2. **权限处理**
-   - 通知权限需要用户授权
-   - 建议添加权限拒绝的引导
+### 已实现功能 ✅
+- ✅ 智能饮食推荐
+- ✅ 季节化建议
+- ✅ 三餐打卡系统
+- ✅ 健康等级评估
+- ✅ 月度统计
 
-3. **数据存储**
-   - StorageUtil 需要先初始化
-   - 存储操作建议使用异步方式
+### 待扩展功能 🔄
+- 🔄 贪睡/延迟提醒功能
+- 🔄 自定义提醒项
+- 🔄 重复周期设置
+- 🔄 深色模式支持
+- 🔄 多终端适配优化
+- 🔄 饮食数据分析图表
+- 🔄 健康趋势报告
+- 🔄 食物营养详情页
+- 🔄 用户偏好学习
 
-4. **通知ID**
-   - 使用时间戳确保唯一性
-   - 避免通知覆盖
+## 📝 更新日志
+
+### v1.1.0 (2026-05-19)
+**新增功能**:
+- ➕ 智能饮食推荐系统 (DietUtil.ets)
+- ➕ 时段专属页面 (MorningPage, NoonPage, EveningPage)
+- ➕ 三餐打卡系统 (MealCheckInPage)
+- ➕ 季节感知功能
+- ➕ 健康等级评估
+- ➕ 月度统计视图
+
+**功能优化**:
+- 🎨 优化UI设计，增加主题色彩
+- 🎨 新增营养标签图标
+- 🎨 改进卡片布局和阴影效果
+- 🔧 扩展StorageUtil支持字符串存储
 
 ---
 
-**文档生成时间**: 2026-05-19  
-**项目版本**: 1.0.0  
+**文档更新时间**: 2026-05-26  
+**项目版本**: 1.1.0  
 **文档作者**: HarmonyOS Development Assistant
