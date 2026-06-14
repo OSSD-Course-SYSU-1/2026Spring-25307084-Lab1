@@ -1,0 +1,44 @@
+{
+  "float": [
+    {
+      "name": "font_size_small",
+      "value": "16vp"
+    },
+    {
+      "name": "font_size_normal",
+      "value": "18vp"
+    },
+    {
+      "name": "font_size_large",
+      "value": "22vp"
+    },
+    {
+      "name": "font_size_title",
+      "value": "28vp"
+    },
+    {
+      "name": "padding_small",
+      "value": "16vp"
+    },
+    {
+      "name": "padding_normal",
+      "value": "24vp"
+    },
+    {
+      "name": "padding_large",
+      "value": "32vp"
+    },
+    {
+      "name": "margin_small",
+      "value": "16vp"
+    },
+    {
+      "name": "margin_normal",
+      "value": "24vp"
+    },
+    {
+      "name": "margin_large",
+      "value": "32vp"
+    }
+  ]
+}

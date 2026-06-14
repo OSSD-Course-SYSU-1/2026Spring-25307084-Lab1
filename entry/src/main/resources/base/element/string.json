@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "Simple Alarm"
+    },
+    {
+      "name": "read_media_reason",
+      "value": "需要读取相册以选择食物图片"
+    },
+    {
+      "name": "write_media_reason",
+      "value": "需要保存拍摄的食物图片"
+    },
+    {
+      "name": "camera_reason",
+      "value": "需要使用相机拍摄食物照片"
+    },
+    {
+      "name": "distributed_datasync_reason",
+      "value": "需要跨设备同步三餐打卡数据"
     }
   ]
 }

@@ -2,6 +2,10 @@
 import router from '@ohos.router'
 import { common } from '@kit.AbilityKit'
 import storageUtil from '../common/utils/StorageUtil'
+import { picker } from '@kit.CoreFileKit'
+import { camera } from '@kit.CameraKit'
+import { image } from '@kit.ImageKit'
+import { hilog } from '@kit.PerformanceAnalysisKit'
 
 // 健康等级
 enum HealthLevel {
@@ -16,6 +20,8 @@ interface MealRecord {
   meal: string        // breakfast, lunch, dinner
   healthLevel: HealthLevel
   time: string        // 打卡时间
+  foodImage?: string  // 食物图片路径（Base64或本地路径）
+  foodText?: string   // 食物描述文字
 }
 
 // 统计信息
@@ -45,6 +51,9 @@ struct MealCheckInPage {
   @State showMonthView: boolean = false  // 是否显示月视图
   @State currentYear: number = 0  // 当前年份
   @State currentMonth: number = 0  // 当前月份
+  @State foodImage: string = ''  // 当前选择的食物图片
+  @State foodText: string = ''   // 当前输入的食物描述
+  @State tempHealthLevel: HealthLevel = HealthLevel.NONE  // 临时选择的健康等级
   
   private meals: string[] = ['breakfast', 'lunch', 'dinner']
   private mealNames: Record<string, string> = {
@@ -67,6 +76,14 @@ struct MealCheckInPage {
   aboutToAppear() {
     const context = getContext(this) as common.UIAbilityContext
     storageUtil.init(context)
+    
+    // 检查是否为流转恢复
+    const isContinueRestore = storageUtil.loadString('continueRestore', 'false')
+    if (isContinueRestore === 'true') {
+      // 清除流转标志
+      storageUtil.save('continueRestore', 'false')
+      hilog.info(0x0000, 'MealCheckInPage', 'Continue restore detected')
+    }
     
     // 获取今天的日期
     const now = new Date()
@@ -123,7 +140,9 @@ struct MealCheckInPage {
     const newRecord: MealRecord = {
       meal: meal,
       healthLevel: healthLevel,
-      time: this.getCurrentTime()
+      time: this.getCurrentTime(),
+      foodImage: this.foodImage,
+      foodText: this.foodText
     }
     
     if (existingIndex >= 0) {
@@ -134,6 +153,48 @@ struct MealCheckInPage {
     
     this.saveRecords()
     this.showHealthPicker = false
+    // 清空临时数据
+    this.foodImage = ''
+    this.foodText = ''
+    this.tempHealthLevel = HealthLevel.NONE
+  }
+  
+  // 选择图片（从相册）
+  private async selectImage(): Promise<void> {
+    try {
+      const photoSelectOptions = new picker.PhotoSelectOptions()
+      photoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE
+      photoSelectOptions.maxSelectNumber = 1
+      
+      const photoPicker = new picker.PhotoViewPicker()
+      const photoSelectResult = await photoPicker.select(photoSelectOptions)
+      
+      if (photoSelectResult.photoUris.length > 0) {
+        this.foodImage = photoSelectResult.photoUris[0]
+      }
+    } catch (err) {
+      console.error('选择图片失败')
+    }
+  }
+  
+  // 拍照（使用相机）
+  private async takePhoto(): Promise<void> {
+    try {
+      // 使用 PhotoViewPicker 的相机功能
+      const photoSelectOptions = new picker.PhotoSelectOptions()
+      photoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE
+      photoSelectOptions.maxSelectNumber = 1
+      
+      const photoPicker = new picker.PhotoViewPicker()
+      // 使用相机拍摄
+      const photoSelectResult = await photoPicker.select(photoSelectOptions)
+      
+      if (photoSelectResult.photoUris.length > 0) {
+        this.foodImage = photoSelectResult.photoUris[0]
+      }
+    } catch (err) {
+      console.error('拍照失败')
+    }
   }
   
   // 获取健康等级颜色
@@ -217,12 +278,15 @@ struct MealCheckInPage {
             .layoutWeight(1)
             .textAlign(TextAlign.Center)
           
-          // 月视图切换按钮
-          Text(this.showMonthView ? '📅' : '📆')
-            .fontSize(28)
-            .onClick(() => {
-              this.showMonthView = !this.showMonthView
-            })
+          // 视图切换按钮
+          Row({ space: 8 }) {
+            // 月视图切换按钮
+            Text(this.showMonthView ? '📅' : '📆')
+              .fontSize(28)
+              .onClick(() => {
+                this.showMonthView = !this.showMonthView
+              })
+          }
         }
         .width('100%')
         .padding({ left: 20, right: 20, top: 10, bottom: 10 })
@@ -274,6 +338,18 @@ struct MealCheckInPage {
     }
     .width('100%')
     .height('100%')
+  }
+  
+  // 获取餐次的食物图片
+  private getMealFoodImage(meal: string): string {
+    const record = this.getMealRecord(meal)
+    return record && record.foodImage ? record.foodImage : ''
+  }
+  
+  // 获取餐次的食物描述
+  private getMealFoodText(meal: string): string {
+    const record = this.getMealRecord(meal)
+    return record && record.foodText ? record.foodText : ''
   }
   
   // 构建餐次卡片
@@ -346,6 +422,36 @@ struct MealCheckInPage {
       }
       .width('100%')
       .alignItems(VerticalAlign.Center)
+      
+      // ===== 显示食物图片和描述 =====
+      if (this.getMealHealthLevel(meal) !== HealthLevel.NONE) {
+        if (this.getMealFoodImage(meal) || this.getMealFoodText(meal)) {
+          Column() {
+            // 显示食物图片
+            if (this.getMealFoodImage(meal)) {
+              Image(this.getMealFoodImage(meal))
+                .width('100%')
+                .height(120)
+                .objectFit(ImageFit.Cover)
+                .borderRadius(8)
+                .margin({ top: 12 })
+            }
+            
+            // 显示食物描述
+            if (this.getMealFoodText(meal)) {
+              Text(this.getMealFoodText(meal))
+                .fontSize(14)
+                .fontColor('#666666')
+                .margin({ top: 8 })
+                .width('100%')
+                .maxLines(3)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+            }
+          }
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
+        }
+      }
     }
     .width('100%')
     .padding(20)
@@ -434,119 +540,220 @@ struct MealCheckInPage {
   buildHealthPicker(): void {
     Column() {
       Column() {
-        Text(`${this.mealIcons[this.currentMeal]} ${this.mealNames[this.currentMeal]}健康评估`)
+        Text(`${this.mealIcons[this.currentMeal]} ${this.mealNames[this.currentMeal]}打卡`)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
-          .margin({ bottom: 20 })
+          .margin({ bottom: 16 })
+        
+        // ===== 食物图片选择区域 =====
+        Column() {
+          if (this.foodImage) {
+            // 显示已选择的图片
+            Stack() {
+              Image(this.foodImage)
+                .width('100%')
+                .height(150)
+                .objectFit(ImageFit.Cover)
+                .borderRadius(8)
+              
+              // 删除图片按钮
+              Row() {
+                Text('×')
+                  .fontSize(20)
+                  .fontColor('#FFFFFF')
+              }
+              .width(30)
+              .height(30)
+              .backgroundColor('#00000088')
+              .borderRadius(15)
+              .justifyContent(FlexAlign.Center)
+              .position({ x: '100%', y: 0 })
+              .translate({ x: -35, y: 5 })
+              .onClick(() => {
+                this.foodImage = ''
+              })
+            }
+            .width('100%')
+            .height(150)
+          } else {
+            // 图片选择按钮
+            Row({ space: 20 }) {
+              Column() {
+                Text('📷')
+                  .fontSize(32)
+                Text('拍照')
+                  .fontSize(12)
+                  .fontColor('#666666')
+                  .margin({ top: 4 })
+              }
+              .layoutWeight(1)
+              .padding(20)
+              .backgroundColor('#F5F5F5')
+              .borderRadius(8)
+              .onClick(() => {
+                this.takePhoto()
+              })
+              
+              Column() {
+                Text('🖼️')
+                  .fontSize(32)
+                Text('相册')
+                  .fontSize(12)
+                  .fontColor('#666666')
+                  .margin({ top: 4 })
+              }
+              .layoutWeight(1)
+              .padding(20)
+              .backgroundColor('#F5F5F5')
+              .borderRadius(8)
+              .onClick(() => {
+                this.selectImage()
+              })
+            }
+            .width('100%')
+          }
+        }
+        .width('100%')
+        .margin({ bottom: 16 })
+        
+        // ===== 食物描述输入区域 =====
+        Column() {
+          Text('食物描述')
+            .fontSize(14)
+            .fontColor('#666666')
+            .margin({ bottom: 8 })
+          
+          TextArea({ placeholder: '记录今天吃了什么...', text: this.foodText })
+            .width('100%')
+            .height(80)
+            .backgroundColor('#F5F5F5')
+            .borderRadius(8)
+            .onChange((value: string) => {
+              this.foodText = value
+            })
+        }
+        .width('100%')
+        .margin({ bottom: 16 })
+        
+        // ===== 健康等级选择 =====
+        Text('健康评估')
+          .fontSize(16)
+          .fontWeight(FontWeight.Bold)
+          .margin({ bottom: 12 })
         
         Row({ space: 12 }) {
           // 健康（绿色）
           Column() {
             Row() {
               Text('✓')
-                .fontSize(32)
+                .fontSize(28)
                 .fontColor('#FFFFFF')
             }
-            .width(60)
-            .height(60)
-            .backgroundColor('#4CAF50')
-            .borderRadius(30)
+            .width(50)
+            .height(50)
+            .backgroundColor(this.tempHealthLevel === HealthLevel.HEALTHY ? '#4CAF50' : '#A5D6A7')
+            .borderRadius(25)
             .justifyContent(FlexAlign.Center)
             
             Text('健康')
-              .fontSize(14)
+              .fontSize(12)
               .fontColor('#4CAF50')
-              .margin({ top: 8 })
-            
-            Text('营养均衡')
-              .fontSize(10)
-              .fontColor('#999999')
-              .margin({ top: 2 })
+              .margin({ top: 6 })
           }
           .layoutWeight(1)
-          .padding(12)
-          .backgroundColor('#E8F5E9')
+          .padding(10)
+          .backgroundColor(this.tempHealthLevel === HealthLevel.HEALTHY ? '#E8F5E9' : '#FFFFFF')
           .borderRadius(12)
+          .border({ width: this.tempHealthLevel === HealthLevel.HEALTHY ? 2 : 1, color: '#4CAF50' })
           .onClick(() => {
-            this.checkIn(this.currentMeal, HealthLevel.HEALTHY)
+            this.tempHealthLevel = HealthLevel.HEALTHY
           })
           
           // 中等（黄色）
           Column() {
             Row() {
               Text('!')
-                .fontSize(32)
+                .fontSize(28)
                 .fontColor('#FFFFFF')
             }
-            .width(60)
-            .height(60)
-            .backgroundColor('#FFC107')
-            .borderRadius(30)
+            .width(50)
+            .height(50)
+            .backgroundColor(this.tempHealthLevel === HealthLevel.MODERATE ? '#FFC107' : '#FFE082')
+            .borderRadius(25)
             .justifyContent(FlexAlign.Center)
             
             Text('中等')
-              .fontSize(14)
+              .fontSize(12)
               .fontColor('#FFC107')
-              .margin({ top: 8 })
-            
-            Text('尚可改进')
-              .fontSize(10)
-              .fontColor('#999999')
-              .margin({ top: 2 })
+              .margin({ top: 6 })
           }
           .layoutWeight(1)
-          .padding(12)
-          .backgroundColor('#FFF8E1')
+          .padding(10)
+          .backgroundColor(this.tempHealthLevel === HealthLevel.MODERATE ? '#FFF8E1' : '#FFFFFF')
           .borderRadius(12)
+          .border({ width: this.tempHealthLevel === HealthLevel.MODERATE ? 2 : 1, color: '#FFC107' })
           .onClick(() => {
-            this.checkIn(this.currentMeal, HealthLevel.MODERATE)
+            this.tempHealthLevel = HealthLevel.MODERATE
           })
           
           // 不健康（红色）
           Column() {
             Row() {
               Text('✗')
-                .fontSize(32)
+                .fontSize(28)
                 .fontColor('#FFFFFF')
             }
-            .width(60)
-            .height(60)
-            .backgroundColor('#F44336')
-            .borderRadius(30)
+            .width(50)
+            .height(50)
+            .backgroundColor(this.tempHealthLevel === HealthLevel.UNHEALTHY ? '#F44336' : '#EF9A9A')
+            .borderRadius(25)
             .justifyContent(FlexAlign.Center)
             
             Text('不健康')
-              .fontSize(14)
+              .fontSize(12)
               .fontColor('#F44336')
-              .margin({ top: 8 })
-            
-            Text('需要改善')
-              .fontSize(10)
-              .fontColor('#999999')
-              .margin({ top: 2 })
+              .margin({ top: 6 })
           }
           .layoutWeight(1)
-          .padding(12)
-          .backgroundColor('#FFEBEE')
+          .padding(10)
+          .backgroundColor(this.tempHealthLevel === HealthLevel.UNHEALTHY ? '#FFEBEE' : '#FFFFFF')
           .borderRadius(12)
+          .border({ width: this.tempHealthLevel === HealthLevel.UNHEALTHY ? 2 : 1, color: '#F44336' })
           .onClick(() => {
-            this.checkIn(this.currentMeal, HealthLevel.UNHEALTHY)
+            this.tempHealthLevel = HealthLevel.UNHEALTHY
           })
         }
         .width('100%')
         
-        // 取消按钮
-        Button('取消')
-          .width('100%')
-          .margin({ top: 20 })
-          .backgroundColor('#F5F5F5')
-          .fontColor('#666666')
-          .onClick(() => {
-            this.showHealthPicker = false
-          })
+        // ===== 操作按钮 =====
+        Row({ space: 12 }) {
+          Button('取消')
+            .layoutWeight(1)
+            .backgroundColor('#F5F5F5')
+            .fontColor('#666666')
+            .onClick(() => {
+              this.showHealthPicker = false
+              this.foodImage = ''
+              this.foodText = ''
+              this.tempHealthLevel = HealthLevel.NONE
+            })
+          
+          Button('完成打卡')
+            .layoutWeight(1)
+            .backgroundColor(this.tempHealthLevel === HealthLevel.NONE ? '#CCCCCC' : '#4CAF50')
+            .fontColor('#FFFFFF')
+            .enabled(this.tempHealthLevel !== HealthLevel.NONE)
+            .onClick(() => {
+              if (this.tempHealthLevel !== HealthLevel.NONE) {
+                this.checkIn(this.currentMeal, this.tempHealthLevel)
+              }
+            })
+        }
+        .width('100%')
+        .margin({ top: 20 })
       }
       .width('90%')
-      .padding(24)
+      .padding(20)
       .backgroundColor('#FFFFFF')
       .borderRadius(20)
       .shadow({ radius: 20, color: '#00000033', offsetX: 0, offsetY: 10 })
@@ -558,6 +765,9 @@ struct MealCheckInPage {
     .onClick(() => {
       // 点击背景关闭弹窗
       this.showHealthPicker = false
+      this.foodImage = ''
+      this.foodText = ''
+      this.tempHealthLevel = HealthLevel.NONE
     })
   }
   
@@ -585,6 +795,10 @@ struct MealCheckInPage {
   }
   
   // 获取日期的健康状态（综合三餐）
+  // 判断规则：
+  // 1. 一餐不健康则整体不健康（红色）
+  // 2. 三餐都没有不健康，且有一餐健康则为健康（绿色）
+  // 3. 其它情况为中等（黄色）
   private getDayHealthStatus(dateStr: string): string {
     const records = this.getDayRecords(dateStr)
     if (records.length === 0) {
@@ -594,15 +808,15 @@ struct MealCheckInPage {
     const healthyCount = records.filter((r: MealRecord) => r.healthLevel === HealthLevel.HEALTHY).length
     const unhealthyCount = records.filter((r: MealRecord) => r.healthLevel === HealthLevel.UNHEALTHY).length
     
-    // 如果全部健康，显示绿色
-    if (healthyCount === records.length) {
-      return 'healthy'
-    }
-    // 如果有不健康，显示红色
+    // 规则1：一餐不健康则整体不健康
     if (unhealthyCount > 0) {
       return 'unhealthy'
     }
-    // 否则显示黄色
+    // 规则2：三餐都没有不健康，且有一餐健康则为健康
+    if (healthyCount > 0) {
+      return 'healthy'
+    }
+    // 规则3：其它情况为中等（全部中等）
     return 'moderate'
   }
   
