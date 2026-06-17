@@ -1,0 +1,90 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 四季渐变背景 -->
+    <linearGradient id="seasonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" /> <!-- 春绿 -->
+      <stop offset="33%" style="stop-color:#FF5722;stop-opacity:1" /> <!-- 夏红 -->
+      <stop offset="66%" style="stop-color:#FFC107;stop-opacity:1" /> <!-- 秋黄 -->
+      <stop offset="100%" style="stop-color:#2196F3;stop-opacity:1" /> <!-- 冬蓝 -->
+    </linearGradient>
+    
+    <!-- 圆形裁剪 -->
+    <clipPath id="circleClip">
+      <circle cx="128" cy="128" r="120" />
+    </clipPath>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <circle cx="128" cy="128" r="120" fill="url(#seasonGradient)" />
+  
+  <!-- 时钟表盘 -->
+  <circle cx="128" cy="128" r="80" fill="white" opacity="0.95" />
+  <circle cx="128" cy="128" r="75" fill="none" stroke="#333" stroke-width="2" />
+  
+  <!-- 时钟刻度 -->
+  <g stroke="#333" stroke-width="2">
+    <line x1="128" y1="58" x2="128" y2="68" /> <!-- 12点 -->
+    <line x1="198" y1="128" x2="188" y2="128" /> <!-- 3点 -->
+    <line x1="128" y1="198" x2="128" y2="188" /> <!-- 6点 -->
+    <line x1="58" y1="128" x2="68" y2="128" /> <!-- 9点 -->
+  </g>
+  
+  <!-- 时针 -->
+  <line x1="128" y1="128" x2="128" y2="85" stroke="#333" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- 分针 -->
+  <line x1="128" y1="128" x2="165" y2="95" stroke="#666" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- 中心点 -->
+  <circle cx="128" cy="128" r="6" fill="#FF5722" />
+  
+  <!-- 食物元素 - 饭碗（左上） -->
+  <g transform="translate(60, 60)">
+    <ellipse cx="20" cy="25" rx="18" ry="8" fill="#FFF" stroke="#333" stroke-width="1.5" />
+    <path d="M 2 25 Q 2 35, 20 35 Q 38 35, 38 25" fill="#FFF" stroke="#333" stroke-width="1.5" />
+    <!-- 米饭 -->
+    <ellipse cx="20" cy="22" rx="12" ry="5" fill="#FFFEF0" />
+    <circle cx="15" cy="21" r="2" fill="#FFF5E1" />
+    <circle cx="25" cy="22" r="2" fill="#FFF5E1" />
+    <circle cx="20" cy="20" r="2" fill="#FFF5E1" />
+  </g>
+  
+  <!-- 食物元素 - 筷子（右上） -->
+  <g transform="translate(170, 65)">
+    <rect x="0" y="0" width="4" height="35" rx="2" fill="#8B4513" />
+    <rect x="8" y="0" width="4" height="35" rx="2" fill="#8B4513" />
+  </g>
+  
+  <!-- 食物元素 - 盘子（右下） -->
+  <g transform="translate(165, 165)">
+    <ellipse cx="20" cy="15" rx="22" ry="10" fill="#FFF" stroke="#333" stroke-width="1.5" />
+    <ellipse cx="20" cy="15" rx="15" ry="7" fill="none" stroke="#DDD" stroke-width="1" />
+  </g>
+  
+  <!-- 四季标识 - 春（左下） -->
+  <g transform="translate(55, 175)">
+    <circle cx="10" cy="10" r="8" fill="#4CAF50" opacity="0.8" />
+    <text x="10" y="14" font-size="10" fill="white" text-anchor="middle" font-weight="bold">春</text>
+  </g>
+  
+  <!-- 四季标识 - 夏 -->
+  <g transform="translate(75, 185)">
+    <circle cx="10" cy="10" r="8" fill="#FF5722" opacity="0.8" />
+    <text x="10" y="14" font-size="10" fill="white" text-anchor="middle" font-weight="bold">夏</text>
+  </g>
+  
+  <!-- 四季标识 - 秋 -->
+  <g transform="translate(95, 175)">
+    <circle cx="10" cy="10" r="8" fill="#FFC107" opacity="0.8" />
+    <text x="10" y="14" font-size="10" fill="white" text-anchor="middle" font-weight="bold">秋</text>
+  </g>
+  
+  <!-- 四季标识 - 冬 -->
+  <g transform="translate(115, 185)">
+    <circle cx="10" cy="10" r="8" fill="#2196F3" opacity="0.8" />
+    <text x="10" y="14" font-size="10" fill="white" text-anchor="middle" font-weight="bold">冬</text>
+  </g>
+  
+  <!-- 装饰性外圈 -->
+  <circle cx="128" cy="128" r="118" fill="none" stroke="white" stroke-width="2" opacity="0.3" />
+</svg>
