@@ -11,18 +11,7 @@
 
 ## 📥 下载与安装
 
-### 方式一：直接下载安装包（推荐）
-
-点击下方链接直接下载HarmonyOS安装包（.hap文件）：
-
-[📥 下载 HAP 安装包 (Phone/Tablet/2in1)](https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1/raw/main/harmonyos-clock-demo.hap)
-
-**安装步骤**：
-1. 下载 `harmonyos-clock-demo.hap` 文件
-2. 使用 hdc 工具安装：`hdc install harmonyos-clock-demo.hap`
-3. 或在 DevEco Studio 中：Run → Install Pre-built HAP
-
-### 方式二：克隆仓库
+### 方式一：克隆仓库（推荐）
 
 ```bash
 git clone git@github.com:OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
@@ -34,7 +23,7 @@ git clone git@github.com:OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
 git clone https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
 ```
 
-### 方式三：GitHub Releases
+### 方式二：GitHub Releases
 
 访问项目的 [Releases 页面](https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1/releases) 下载最新版本的HAP安装包。
 
@@ -42,7 +31,7 @@ git clone https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
 
 如果需要从源码构建：
 
-1. **下载项目源码**（选择方式二或方式三）
+1. **下载项目源码**（选择方式一或方式二）
 2. **打开 DevEco Studio**（HarmonyOS官方开发工具）
 3. **导入项目**：File → Open → 选择项目目录
 4. **配置签名**：在 DevEco Studio 中配置应用签名证书
@@ -53,7 +42,6 @@ git clone https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
 > 💡 **提示**：
 > - HAP文件是HarmonyOS应用安装包格式，类似于Android的APK
 > - 首次使用需要安装 DevEco Studio 并配置 HarmonyOS SDK，详见 [HarmonyOS开发环境搭建指南](https://developer.harmonyos.com/cn/develop/deveco-studio)
-> - 推荐使用方式一直接下载HAP包，快速安装体验
 
 ---
 
