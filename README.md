@@ -15,7 +15,7 @@
 
 点击下方链接直接下载HarmonyOS安装包（.hap文件）：
 
-[📥 下载 HAP 安装包](./harmonyos-clock-demo.hap)
+[📥 下载 HAP 安装包 (Phone/Tablet/2in1)](https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1/raw/main/harmonyos-clock-demo.hap)
 
 **安装步骤**：
 1. 下载 `harmonyos-clock-demo.hap` 文件
