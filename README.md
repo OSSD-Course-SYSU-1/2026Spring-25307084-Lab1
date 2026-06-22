@@ -9,6 +9,44 @@
 **目标平台**: HarmonyOS  
 **支持设备**: Phone, Tablet, 2in1设备
 
+## 📥 下载与安装
+
+### 方式一：克隆仓库（推荐）
+
+```bash
+git clone git@github.com:OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
+```
+
+或使用HTTPS方式：
+
+```bash
+git clone https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
+```
+
+### 方式二：下载ZIP压缩包
+
+点击下方链接直接下载项目源码：
+
+[📥 下载 ZIP 压缩包](https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1/archive/refs/heads/main.zip)
+
+### 方式三：GitHub Releases
+
+访问项目的 [Releases 页面](https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1/releases) 下载最新版本。
+
+### 📱 安装说明
+
+1. **下载项目源码**（选择上述任一方式）
+2. **打开 DevEco Studio**（HarmonyOS官方开发工具）
+3. **导入项目**：File → Open → 选择项目目录
+4. **配置签名**：在 DevEco Studio 中配置应用签名证书
+5. **编译运行**：
+   - 连接 HarmonyOS 设备或启动模拟器
+   - 点击 Run 按钮编译并安装应用
+
+> 💡 **提示**：首次使用需要安装 DevEco Studio 并配置 HarmonyOS SDK，详见 [HarmonyOS开发环境搭建指南](https://developer.harmonyos.com/cn/develop/deveco-studio)
+
+---
+
 ## 🎬 视频演示
 
 本项目提供了两个演示视频（**点击链接后请点击 "Download" 按钮下载观看**）：
