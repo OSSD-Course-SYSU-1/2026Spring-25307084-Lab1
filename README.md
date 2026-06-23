@@ -1,9 +1,9 @@
-# HarmonyOS 饭点提醒应用
+# HarmonyOS TriMeal (一日三餐)
 
 ## 📋 项目概述
 
-**项目名称**: HarmonyOS Clock Demo (饭点提醒应用)  
-**包名**: com.example.harmonyos_clock_demo  
+**项目名称**: HarmonyOS TriMeal (一日三餐)  
+**包名**: com.example.trimeal  
 **版本**: 1.0.0 (versionCode: 1000000)  
 **开发语言**: ArkTS (HarmonyOS声明式UI开发语言)  
 **目标平台**: HarmonyOS  
@@ -61,7 +61,7 @@ git clone https://github.com/OSSD-Course-SYSU-1/2026Spring-25307084-Lab1.git
 
 ## 🎯 项目功能
 
-本项目是一个基于HarmonyOS的饭点提醒应用，主要功能包括：
+本项目是一个基于HarmonyOS的一日三餐管理应用，主要功能包括：
 
 1. **实时时钟展示** - 翻页风格的时钟显示
 2. **提醒设置** - 支持早餐、午餐、晚餐三种提醒
@@ -275,7 +275,7 @@ import { BreakpointValue } from '../common/utils/BreakpointType'
 ## 📁 项目结构
 
 ```
-HarmonyOs-Clock-Demo-main/
+HarmonyOS-TriMeal/
 ├── AppScope/                          # 应用全局配置
 │   └── app.json5                      # 应用配置文件
 ├── entry/                             # 主入口模块
